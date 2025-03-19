@@ -23,12 +23,20 @@ public class Menu {
 	}
 
 	public void handleUserMenuSelection(String menuChoice) {
-		if (menuChoice.equals("register")) {
+		if (this.checkRegisterMenuSelection(menuChoice)) {
 			this.registerUser();
 		}
-		else if (menuChoice.equals("login")) {
+		else if (this.checkLoginMenuSelection(menuChoice)) {
 			this.userLogin();
 		}
+	}
+	
+	public boolean checkRegisterMenuSelection(String input) {
+		return input.equals("register");
+	}
+	
+	public boolean checkLoginMenuSelection(String input) {
+		return input.equals("login");
 	}
 
 	public void userLogin() {
@@ -36,17 +44,26 @@ public class Menu {
 		
 		String input = this.handleUserBooleanInput();
 		
-		if (input.equals("yes")) {
+		if (this.checkYes(input)) {
 			//the user actually wants to login
 			this.inputCredentials("login");
 			
 		}
 		
-		else if (input.equals("no")) {
+		else if (this.checkNo(input)) {
 			//go back to the start of the program
 			this.runStartingConfiguration();
 		}
 		
+	}
+	
+	public boolean checkYes(String input) {
+		return input.equals("yes");
+		
+	}
+	
+	public boolean checkNo(String input) {
+		return input.equals("no");
 	}
 
 	public void registerUser() {
@@ -54,13 +71,13 @@ public class Menu {
 		
 		String input = this.handleUserBooleanInput();
 		
-		if (input.equals("yes")) {
+		if (this.checkYes(input)) {
 			//the user wants to register
 			this.inputCredentials("register");
 			
 		}
 		
-		else if (input.equals("no")) {
+		else if (this.checkNo(input)) {
 			//go back to the start of the program
 			this.runStartingConfiguration();
 		}
@@ -99,24 +116,36 @@ public class Menu {
 
 	public String handleUserMenuInput() {
 		//convert user input to lower case for if statement handling
-		String input = this.scanner.nextLine().toLowerCase();
+		String input = this.scanner.nextLine();
 		
-		while ( !(input.equals("register")) && !(input.equals("login")) ) {
+		while ( this.checkIncorrectUserMenuInput(input) ) {
 			System.out.println("Please enter a correct menu selection.");
-			input = this.scanner.nextLine().toLowerCase();		}
+			input = this.scanner.nextLine();		}
 		
 		return input;
 	}
 	
+	public boolean checkIncorrectUserMenuInput(String input) {
+		input = input.toLowerCase();
+		return !(input.equals("register")) && !(input.equals("login"));
+		
+	}
+	
 	public String handleUserBooleanInput() {
 		//convert user input to lower case for if statement handling
-		String input = this.scanner.nextLine().toLowerCase();
+		String input = this.scanner.nextLine();
 		
-		while ( !(input.equals("yes")) && !(input.equals("no")) ) {
+		while ( this.checkIncorrectUserBooleanInput(input) ) {
 			System.out.println("Please enter a correct menu selection.");
-			input = this.scanner.nextLine().toLowerCase();		}
+			input = this.scanner.nextLine();		}
 		
 		return input;
+	}
+	
+	public boolean checkIncorrectUserBooleanInput(String input) {
+		input = input.toLowerCase();
+		return !(input.equals("yes")) && !(input.equals("no"));
+		
 	}
 
 	public void displayWelcomeMessage() {
