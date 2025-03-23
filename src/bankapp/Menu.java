@@ -1,177 +1,189 @@
 package bankapp;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Menu {
-	
+
 	private Scanner scanner;
-	
+	private HashMap<String, User> users;  // Store registered users
+	private User currentUser;             // Track the logged-in user
+
 	public Menu() {
 		this.scanner = new Scanner(System.in);
+		this.users = new HashMap<>();
+		this.currentUser = null;
 	}
-	
+
 	public void runStartingConfiguration() {
-		//welcome message
 		this.displayWelcomeMessage();
-		
-		this.displayMenuOptions();
-		
-		String menuChoice = this.handleUserMenuInput();
-		
-		this.handleUserMenuSelection(menuChoice);
-		
+
+		while (true) {
+			this.displayMenuOptions();
+
+			String menuChoice = this.handleUserMenuInput();
+			this.handleUserMenuSelection(menuChoice);
+		}
 	}
 
 	public void handleUserMenuSelection(String menuChoice) {
-		if (this.checkRegisterMenuSelection(menuChoice)) {
+		if (menuChoice.equalsIgnoreCase("register") && currentUser == null) {
 			this.registerUser();
-		}
-		else if (this.checkLoginMenuSelection(menuChoice)) {
+		} else if (menuChoice.equalsIgnoreCase("login") && currentUser == null) {
 			this.userLogin();
+		} else if (menuChoice.equalsIgnoreCase("logout") && currentUser != null) {
+			this.logout();
+		} else {
+			System.out.println("Invalid selection or action not allowed.");
 		}
 	}
-	
+
 	public boolean checkRegisterMenuSelection(String input) {
-		return input.equals("register");
+		return input.equalsIgnoreCase("register");
 	}
-	
+
 	public boolean checkLoginMenuSelection(String input) {
-		return input.equals("login");
+		return input.equalsIgnoreCase("login");
 	}
 
 	public void userLogin() {
 		this.displayLoginOptions();
-		
-		String input = this.handleUserBooleanInput();
-		
-		if (this.checkYes(input)) {
-			//the user actually wants to login
-			this.inputCredentials("login");
-			
-		}
-		
-		else if (this.checkNo(input)) {
-			//go back to the start of the program
+		if (this.checkYes(this.handleUserBooleanInput())) {
+			String username = promptUsername();
+			if (!users.containsKey(username)) {
+				System.out.println("User not found. Try again.");
+				return;
+			}
+
+			String password = promptPassword();
+			validateAndLoginUser(username, password);
+		} else {
 			this.runStartingConfiguration();
 		}
-		
-	}
-	
-	public boolean checkYes(String input) {
-		return input.equals("yes");
-		
-	}
-	
-	public boolean checkNo(String input) {
-		return input.equals("no");
 	}
 
 	public void registerUser() {
 		this.displayRegisterOptions();
-		
-		String input = this.handleUserBooleanInput();
-		
-		if (this.checkYes(input)) {
-			//the user wants to register
-			this.inputCredentials("register");
-			
-		}
-		
-		else if (this.checkNo(input)) {
-			//go back to the start of the program
+		if (this.checkYes(this.handleUserBooleanInput())) {
+			String username = promptUsername();
+
+			if (users.containsKey(username)) {
+				System.out.println("Username already exists. Try again.");
+				return;
+			}
+
+			String password = promptPassword();
+			createUser(username, password);
+		} else {
 			this.runStartingConfiguration();
 		}
-		
-		
 	}
 
-	private void inputCredentials(String menuType) {
-		if (menuType.equals("login")) {
-			
-			System.out.println("Enter Username: ");
-			String username = this.scanner.nextLine();
-			System.out.println("Enter Password: ");
-			String password = this.scanner.nextLine();
-			
-			//if it matches, log the user in to their account
-			
-			System.out.println("Logged in!");
-			
+	public void logout() {
+		if (currentUser != null) {
+			System.out.println("Logged out: " + currentUser.getUsername());
+			currentUser = null;
+		} else {
+			System.out.println("No user is currently logged in.");
 		}
-		
-		else if (menuType.equals("register")) {
-			//user will enter their username and password, and these will be used to create a new User -> which is logged into
-			
-			System.out.println("Enter Username: ");
-			String username = this.scanner.nextLine();
-			System.out.println("Enter Password: ");
-			String password = this.scanner.nextLine();
-			
-			//User u = new User(username, password);
-			
-			System.out.println("Created and logged into new account!");
+	}
+
+	private String promptUsername() {
+		System.out.println("Enter Username: ");
+		return this.scanner.nextLine();
+	}
+
+	private String promptPassword() {
+		System.out.println("Enter Password: ");
+		return this.scanner.nextLine();
+	}
+
+	private void validateAndLoginUser(String username, String password) {
+		User user = users.get(username);
+		if (user.validatePassword(password)) {
+			currentUser = user;
+			System.out.println("Logged in successfully as: " + username);
+		} else {
+			System.out.println("Incorrect password.");
 		}
-		
+	}
+
+	private void createUser(String username, String password) {
+		User newUser = new User(username, password);
+		users.put(username, newUser);
+		currentUser = newUser;
+		System.out.println("Created and logged into new account!");
+	}
+
+	public boolean checkYes(String input) {
+		return input.equalsIgnoreCase("yes");
+	}
+
+	public boolean checkNo(String input) {
+		return input.equalsIgnoreCase("no");
 	}
 
 	public String handleUserMenuInput() {
-		//convert user input to lower case for if statement handling
-		String input = this.scanner.nextLine();
-		
-		while ( this.checkIncorrectUserMenuInput(input) ) {
+		String input = this.scanner.nextLine().toLowerCase();
+
+		while (this.checkIncorrectUserMenuInput(input)) {
 			System.out.println("Please enter a correct menu selection.");
-			input = this.scanner.nextLine();		}
-		
+			input = this.scanner.nextLine().toLowerCase();
+		}
+
 		return input;
 	}
-	
+
 	public boolean checkIncorrectUserMenuInput(String input) {
-		input = input.toLowerCase();
-		return !(input.equals("register")) && !(input.equals("login"));
-		
+		String lowerInput = input.toLowerCase();
+
+		if (currentUser == null) {
+			return !(lowerInput.equals("register") || lowerInput.equals("login"));
+		} else {
+			return !lowerInput.equals("logout");
+		}
 	}
-	
+
 	public String handleUserBooleanInput() {
-		//convert user input to lower case for if statement handling
-		String input = this.scanner.nextLine();
-		
-		while ( this.checkIncorrectUserBooleanInput(input) ) {
+		String input = this.scanner.nextLine().toLowerCase();
+
+		while (this.checkIncorrectUserBooleanInput(input)) {
 			System.out.println("Please enter a correct menu selection.");
-			input = this.scanner.nextLine();		}
-		
+			input = this.scanner.nextLine().toLowerCase();
+		}
+
 		return input;
 	}
-	
+
 	public boolean checkIncorrectUserBooleanInput(String input) {
-		input = input.toLowerCase();
-		return !(input.equals("yes")) && !(input.equals("no"));
-		
+		String lowerInput = input.toLowerCase();
+
+		return !(lowerInput.equals("yes") || lowerInput.equals("no"));
 	}
 
 	public void displayWelcomeMessage() {
 		System.out.println("Welcome to the bank.");
-		
 	}
-	
-	public void displayMenuOptions() {
-		System.out.println("> REGISTER");
-		System.out.println("> LOGIN");
-		
-	}
-	
-	public void displayLoginOptions() {
-		System.out.println("Are you sure that you want to login? If not, you will be taken to the main menu.");
-		System.out.println("> YES");
-		System.out.println("> NO");
-		
-	}
-	
-	public void displayRegisterOptions() {
-		System.out.println("Are you sure that you want to register? If not, you will be taken to the main menu.");
-		System.out.println("> YES");
-		System.out.println("> NO");
-		
-	}
-	
 
+	public void displayMenuOptions() {
+		System.out.println("\nMENU OPTIONS:");
+		if (currentUser == null) {
+			System.out.println("> REGISTER");
+			System.out.println("> LOGIN");
+		} else {
+			System.out.println("> LOGOUT");
+		}
+	}
+
+	public void displayLoginOptions() {
+		System.out.println("Are you sure you want to login? If not, you will be taken to the main menu.");
+		System.out.println("> YES");
+		System.out.println("> NO");
+	}
+
+	public void displayRegisterOptions() {
+		System.out.println("Are you sure you want to register? If not, you will be taken to the main menu.");
+		System.out.println("> YES");
+		System.out.println("> NO");
+	}
 }
