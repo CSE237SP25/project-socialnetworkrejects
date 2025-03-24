@@ -166,11 +166,13 @@ public class Menu {
 	}
 
 	public void displayMenuOptions() {
-		System.out.println("\nMENU OPTIONS:");
 		if (currentUser == null) {
+			System.out.println("\nMENU OPTIONS:");
 			System.out.println("> REGISTER");
 			System.out.println("> LOGIN");
 		} else {
+			System.out.println("Welcome, "+ currentUser.getUsername() + "!");
+			System.out.println("\nMENU OPTIONS:");
 			System.out.println("> LOGOUT");
 		}
 	}
