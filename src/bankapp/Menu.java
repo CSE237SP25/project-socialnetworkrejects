@@ -175,6 +175,10 @@ public class Menu {
 		}
 	}
 
+	public void accountWithdraw(){
+		System.out.println("Printout!");
+	}
+
 	public void displayLoginOptions() {
 		System.out.println("Are you sure you want to login? If not, you will be taken to the main menu.");
 		System.out.println("> YES");
