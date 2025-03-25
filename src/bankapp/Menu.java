@@ -175,9 +175,18 @@ public class Menu {
 		}
 	}
 
-	public void accountWithdraw(){
-		System.out.println("Printout!");
+	public void withdraw(double amount) {
+		if(amount < 0) {
+			throw new IllegalArgumentException();
+		}
+		this.balance -= amount;
+		System.out.println("Withdrawl completed!")
 	}
+
+	public double getCurrentBalance() {
+		return this.balance;
+	}
+}
 
 	public void displayLoginOptions() {
 		System.out.println("Are you sure you want to login? If not, you will be taken to the main menu.");
