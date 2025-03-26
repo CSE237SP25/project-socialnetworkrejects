@@ -10,7 +10,7 @@ Team Members:
 For each iteration you should answer the following:
 
 What user stories were completed this iteration?
-Iteration 1:
+\n Iteration 1:
 
 What user stories do you intend to complete next iteration?
 Iteration 1:
