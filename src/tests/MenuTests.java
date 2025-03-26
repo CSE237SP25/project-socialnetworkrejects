@@ -65,14 +65,17 @@ public class MenuTests {
         }
     }
 
-    @Test
-    public void testWithdrawNegativeAmount() {
-        m.registerUserForTest("testuser", "testpass");
-        try {
-            m.withdraw(-25);
-            fail("Expected an IllegalArgumentException for negative withdrawal.");
-        } catch (IllegalArgumentException e) {
-            assertTrue(e != null);
-        }
-    }
+	@Test
+	public void testWithdrawNegativeFunds() {
+		m.registerUserForTest("testuser", "testpass");
+		try {
+			m.withdraw(-25);
+			fail("Expected an IllegalArgumentException for a negative withdrawal.");
+			
+		}
+		catch (IllegalArgumentException e) {
+			assertTrue(e != null);
+		}
+	}
+
 }
