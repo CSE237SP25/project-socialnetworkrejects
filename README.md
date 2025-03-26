@@ -21,4 +21,8 @@ Iteration 1:
 
 
 What commands are needed to compile and run your code from the command line (please provide a script that users can run to launch your program)?
-Iteration 1: ./RunBankingApp.sh
+To run the program, run
+```
+./RunBankingApp.sh
+```
+in the root folder of the project.
