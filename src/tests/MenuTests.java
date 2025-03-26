@@ -112,6 +112,7 @@ public class MenuTests {
 		try {
 			m.withdraw(-25);
 			fail();
+
 		} catch (IllegalArgumentException e) {
 			assertTrue(e != null);
 		}
