@@ -66,21 +66,21 @@ public class Menu {
      */
     public void displayMenuOptions() {
         if (currentUser == null) {
-            System.out.println("Menu Options:");
-            System.out.println("Register");
-            System.out.println("Login");
+            System.out.println("[ Menu Options ]");
+            System.out.println("> Register");
+            System.out.println("> Login");
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("Admin")) {
                 System.out.println("Welcome, Admin!");
-                System.out.println("Menu Options:");
-                System.out.println("Logout");
+                System.out.println("[ Menu Options ]");
+                System.out.println("> Logout");
             } else {
                 System.out.println("Welcome, " + currentUser.getUsername() + "!");
-                System.out.println("Menu Options:");
-                System.out.println("Desposits");
-                System.out.println("Withdraw");
-                System.out.println("Balance");
-                System.out.println("Logout");
+                System.out.println("[Menu Options ]");
+                System.out.println("> Deposit");
+                System.out.println("> Withdraw");
+                System.out.println("> Balance");
+                System.out.println("> Logout");
             }
         }
     }
@@ -89,7 +89,8 @@ public class Menu {
      * Welcome message
      */
     public void displayWelcomeMessage() {
-        System.out.println("Welcome Bank Social Network.");
+    	System.out.print("\n");
+        System.out.println("Welcome to the Bank Social Network.");
     }
 
     /**
@@ -236,7 +237,7 @@ public class Menu {
     public String handleUserMenuInput() {
         String input = scanner.nextLine().toLowerCase();
         while (checkIncorrectUserMenuInput(input)) {
-            System.out.println("Please enter a correct menu selection");
+            System.out.println("Please enter a correct menu selection.");
             input = scanner.nextLine().toLowerCase();
         }
         return input;
