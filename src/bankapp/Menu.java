@@ -71,12 +71,12 @@ public class Menu {
             System.out.println("> Login");
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("Admin")) {
-                System.out.println("Welcome, Admin!");
+                System.out.println("\n" + "Welcome, Admin!");
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Logout");
             } else {
-                System.out.println("Welcome, " + currentUser.getUsername() + "!");
-                System.out.println("[Menu Options ]");
+                System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
+                System.out.println("[ Menu Options ]");
                 System.out.println("> Deposit");
                 System.out.println("> Withdraw");
                 System.out.println("> Balance");
@@ -91,6 +91,7 @@ public class Menu {
     public void displayWelcomeMessage() {
     	System.out.print("\n");
         System.out.println("Welcome to the Bank Social Network.");
+        System.out.print("\n");
     }
 
     /**
@@ -116,10 +117,10 @@ public class Menu {
      */
     public void logout() {
         if (currentUser != null) {
-            System.out.println("Logged out: " + currentUser.getUsername());
+            System.out.println("\n" + "Successfully Logged out user " + currentUser.getUsername()+ "." + "\n");
             currentUser = null;
         } else {
-            System.out.println("User is not logged in.");
+            System.out.println("\n" + "User is not logged in." + "\n");
         }
     }
 
@@ -159,9 +160,9 @@ public class Menu {
         User user = users.get(username);
         if (user.validatePassword(password)) {
             currentUser = user;
-            System.out.println("Logged in successfully as: " + username);
+            System.out.println("\n" + "Logged in successfully as " + username + ".");
         } else {
-            System.out.println("Incorrect password");
+            System.out.println("\n" + "Incorrect password");
         }
     }
 
@@ -172,6 +173,7 @@ public class Menu {
         User newUser = new User(username, password);
         users.put(username, newUser);
         currentUser = newUser;
+        System.out.print("\n");
         System.out.println("Created and logged into new account!");
     }
 
@@ -179,13 +181,16 @@ public class Menu {
      * Deposit
      */
     public void depositMoney() {
-        System.out.print("Enter amount to deposit: ");
+    	System.out.print("\n");
+        System.out.println("Enter amount to deposit: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume leftover newline
         try {
             currentUser.getAccount().deposit(amount);
+            System.out.print("\n");
             System.out.println("Deposit successful.");
         } catch (IllegalArgumentException e) {
+        	System.out.print("\n");
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -194,13 +199,16 @@ public class Menu {
      * Withdraw
      */
     public void withdrawMoney() {
-        System.out.print("Enter amount to withdraw: ");
+    	System.out.print("\n");
+        System.out.println("Enter amount to withdraw: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume leftover newline
         try {
             currentUser.getAccount().withdraw(amount);
+            System.out.print("\n");
             System.out.println("Withdrawal completed!");
         } catch (IllegalArgumentException e) {
+        	System.out.print("\n");
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -209,29 +217,37 @@ public class Menu {
      *User balance
      */
     public void checkBalance() {
-        System.out.println("Current balance: $" + currentUser.getAccount().getCurrentBalance());
+    	System.out.print("\n");
+    	double unformattedDouble = currentUser.getAccount().getCurrentBalance();
+        System.out.println("Current balance: $" + String.format("%.2f", unformattedDouble));
     }
 
     public String promptUsername() {
+    	System.out.print("\n");
         System.out.println("Enter Username: ");
         return scanner.nextLine();
     }
 
     public String promptPassword() {
+    	System.out.print("\n");
         System.out.println("Enter Password: ");
         return scanner.nextLine();
     }
 
     public void displayLoginOptions() {
+    	System.out.print("\n");
         System.out.println("Are you sure you want to login?");
-        System.out.println("YES");
-        System.out.println("NO");
+        System.out.print("\n");
+        System.out.println("> Yes");
+        System.out.println("> No");
     }
 
     public void displayRegisterOptions() {
+    	System.out.print("\n");
         System.out.println("Are you sure you want to register?");
-        System.out.println("YES");
-        System.out.println("NO");
+        System.out.print("\n");
+        System.out.println("> Yes");
+        System.out.println("> No");
     }
 
     public String handleUserMenuInput() {
