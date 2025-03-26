@@ -26,6 +26,14 @@ public class BankAccount {
         }
         this.balance -= amount;
     }
+    
+    public void transfer(double amount, BankAccount otherAccount) {
+    	if (amount < 0 || amount > this.balance) {
+    		throw new IllegalArgumentException("Transfer amount invalid");
+    	}
+    	otherAccount.deposit(amount);
+    	this.withdraw(amount);
+    }
     /**
      * Returns the current account balance
      */

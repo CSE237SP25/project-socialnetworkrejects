@@ -51,4 +51,29 @@ public class BankAccountTests {
             assertTrue(e != null);
         }
     }
+    
+    @Test
+    public void testTransfer() {
+    	this.account.deposit(50);
+    	BankAccount otherBankAccount = new BankAccount();
+    	account.transfer(25.0, otherBankAccount);
+    	assertEquals(25.0,otherBankAccount.getCurrentBalance(),0.005);
+    	
+    }
+    
+    @Test
+    public void testInvalidTransfer() {
+    	this.account.deposit(50);
+    	BankAccount otherBankAccount = new BankAccount();
+    	
+    	try {
+    		account.transfer(-25.0, otherBankAccount);
+    		fail("Expected an IllegalArgumentException for transfering negative amounts of money.");
+    	}
+    	catch (IllegalArgumentException e) {
+    		assertTrue(e != null);
+    	}
+    	
+    }
+    
 }
