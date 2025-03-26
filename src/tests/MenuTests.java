@@ -1,5 +1,6 @@
 package tests;
 
+import bankapp.BankAccount;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -10,10 +11,10 @@ public class MenuTests {
 
 	private Menu m;
 
+
 	@Before
 	public void setUp() {
 		m = new Menu();
-
 	}
 
 	@Test
@@ -33,7 +34,6 @@ public class MenuTests {
 
 		actual = m.checkLoginMenuSelection("register");
 		assertEquals(false, actual);
-
 
 	}
 
@@ -92,6 +92,29 @@ public class MenuTests {
 
 		actual = m.checkIncorrectUserBooleanInput("NO");
 		assertEquals(false, actual);
+	}
+
+	public void testWithdraw(){
+		m.withdraw(25.0);
+		assertEquals(m.getCurrentBalance(), 75.00, 0.005);
+	}
+
+	public void testWithdrawInsufficiently(){
+		try {
+			m.deposit(200);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertTrue(e != null);
+		}
+	}
+
+	public void testWithdrawNegativeAmount(){
+		try {
+			m.withdraw(-25);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertTrue(e != null);
+		}
 	}
 
 }

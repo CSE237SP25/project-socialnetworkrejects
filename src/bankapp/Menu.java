@@ -8,11 +8,12 @@ public class Menu {
 	private Scanner scanner;
 	private HashMap<String, User> users;  // Store registered users
 	private User currentUser;             // Track the logged-in user
-
+	private double balance;
 	public Menu() {
 		this.scanner = new Scanner(System.in);
 		this.users = new HashMap<>();
 		this.currentUser = null;
+		this.balance= 100;
 	}
 
 	public void runStartingConfiguration() {
@@ -176,7 +177,7 @@ public class Menu {
 	}
 
 	public void withdraw(double amount) {
-		if(amount < 0) {
+		if(amount > this.balance || amount < 0) {
 			throw new IllegalArgumentException();
 		}
 		this.balance -= amount;
