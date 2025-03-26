@@ -4,202 +4,310 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Menu {
+    private Scanner scanner;
+    private HashMap<String, User> users;
+    private User currentUser;
 
-	private Scanner scanner;
-	private HashMap<String, User> users;  // Store registered users
-	private User currentUser;             // Track the logged-in user
-	private double balance;
-	public Menu() {
-		this.scanner = new Scanner(System.in);
-		this.users = new HashMap<>();
-		this.currentUser = null;
-		this.balance= 100;
-	}
+    public Menu() {
+        this.scanner = new Scanner(System.in);
+        this.users = new HashMap<>();
+        this.currentUser = null;
+    }
 
-	public void runStartingConfiguration() {
-		this.displayWelcomeMessage();
+    public void runStartingConfiguration() {
+        displayWelcomeMessage();
+        while (true) {
+            displayMenuOptions();
+            String menuChoice = handleUserMenuInput();
+            handleUserMenuSelection(menuChoice);
+        }
+    }
 
-		while (true) {
-			this.displayMenuOptions();
+    /**
+     * Admin vs nonadmin
+     */
+    public void handleUserMenuSelection(String menuChoice) {
+        if (currentUser == null) {
+            // No one is logged in -> REGISTER or LOGIN.
+            if (menuChoice.equalsIgnoreCase("register")) {
+                registerUser();
+            } else if (menuChoice.equalsIgnoreCase("login")) {
+                userLogin();
+            } else {
+                System.out.println("The selection is invalid.");
+            }
+        } else {
+        	//Logged in
+            if (currentUser.getUsername().equalsIgnoreCase("admin")) {
+                // Admin
+                if (menuChoice.equalsIgnoreCase("logout")) {
+                    logout();
+                } else {
+                    System.out.println("logout");
+                }
+            } else {
+                if (menuChoice.equalsIgnoreCase("deposit")) {
+                    depositMoney();
+                } else if (menuChoice.equalsIgnoreCase("withdraw")) {
+                    withdrawMoney();
+                } else if (menuChoice.equalsIgnoreCase("balance")) {
+                    checkBalance();
+                } else if (menuChoice.equalsIgnoreCase("logout")) {
+                    logout();
+                } else {
+                    System.out.println("Invalid action");
+                }
+            }
+        }
+    }
 
-			String menuChoice = this.handleUserMenuInput();
-			this.handleUserMenuSelection(menuChoice);
-		}
-	}
+    /**
+     * Main menu
+     */
+    public void displayMenuOptions() {
+        if (currentUser == null) {
+            System.out.println("[ Menu Options ]");
+            System.out.println("> Register");
+            System.out.println("> Login");
+        } else {
+            if (currentUser.getUsername().equalsIgnoreCase("Admin")) {
+                System.out.println("\n" + "Welcome, admin user!");
+                System.out.println("[ Menu Options ]");
+                System.out.println("> Logout");
+            } else {
+                System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
+                System.out.println("[ Menu Options ]");
+                System.out.println("> Deposit");
+                System.out.println("> Withdraw");
+                System.out.println("> Balance");
+                System.out.println("> Logout");
+            }
+        }
+    }
 
-	public void handleUserMenuSelection(String menuChoice) {
-		if (menuChoice.equalsIgnoreCase("register") && currentUser == null) {
-			this.registerUser();
-		} else if (menuChoice.equalsIgnoreCase("login") && currentUser == null) {
-			this.userLogin();
-		} else if (menuChoice.equalsIgnoreCase("logout") && currentUser != null) {
-			this.logout();
-		} else {
-			System.out.println("Invalid selection or action not allowed.");
-		}
-	}
+    /**
+     * Welcome message
+     */
+    public void displayWelcomeMessage() {
+    	System.out.print("\n");
+        System.out.println("Welcome to the Bank Social Network.");
+        System.out.print("\n");
+    }
 
-	public boolean checkRegisterMenuSelection(String input) {
-		return input.equalsIgnoreCase("register");
-	}
+    /**
+     * Creates a new user
+     */
+    public void registerUser() {
+        displayRegisterOptions();
+        if (checkYes(handleUserBooleanInput())) {
+            String username = promptUsername();
+            if (users.containsKey(username)) {
+                System.out.println("Username already exists. Please try again.");
+                return;
+            }
+            String password = promptPassword();
+            createUser(username, password);
+        } else {
+            runStartingConfiguration();
+        }
+    }
 
-	public boolean checkLoginMenuSelection(String input) {
-		return input.equalsIgnoreCase("login");
-	}
+    /**
+     * Logs out
+     */
+    public void logout() {
+        if (currentUser != null) {
+            System.out.println("\n" + "Successfully logged out user " + currentUser.getUsername()+ "." + "\n");
+            currentUser = null;
+        } else {
+            System.out.println("\n" + "User is not logged in." + "\n");
+        }
+    }
 
-	public void userLogin() {
-		this.displayLoginOptions();
-		if (this.checkYes(this.handleUserBooleanInput())) {
-			String username = promptUsername();
-			if (!users.containsKey(username)) {
-				System.out.println("User not found. Try again.");
-				return;
-			}
+    /**
+     * Admin & normal
+     */
+    public void userLogin() {
+        displayLoginOptions();
+        if (checkYes(handleUserBooleanInput())) {
+            String username = promptUsername();
+            String password = promptPassword();
+            // If admin
+            if (username.equalsIgnoreCase("admin")) {
+                if (password.equals("xyz")) {
+                    currentUser = new User("admin", "xyz");
+                    System.out.println("\n" + "Admin user logged in successfully.");
+                } else {
+                    System.out.println("Invalid admin credentials.");
+                }
+            } else {
+                // Normal user
+                if (!users.containsKey(username)) {
+                    System.out.println("User not found. Try again.");
+                    return;
+                }
+                validateAndLoginUser(username, password);
+            }
+        } else {
+            runStartingConfiguration();
+        }
+    }
 
-			String password = promptPassword();
-			validateAndLoginUser(username, password);
-		} else {
-			this.runStartingConfiguration();
-		}
-	}
+    /**
+     * Password validation
+     */
+    private void validateAndLoginUser(String username, String password) {
+        User user = users.get(username);
+        if (user.validatePassword(password)) {
+            currentUser = user;
+            System.out.println("\n" + "Logged in successfully as " + username + ".");
+        } else {
+            System.out.println("\n" + "Incorrect password");
+        }
+    }
 
-	public void registerUser() {
-		this.displayRegisterOptions();
-		if (this.checkYes(this.handleUserBooleanInput())) {
-			String username = promptUsername();
+    /**
+     * Creates the user
+     */
+    private void createUser(String username, String password) {
+        User newUser = new User(username, password);
+        users.put(username, newUser);
+        currentUser = newUser;
+        System.out.print("\n");
+        System.out.println("Created and logged into new account!");
+    }
 
-			if (users.containsKey(username)) {
-				System.out.println("Username already exists. Try again.");
-				return;
-			}
+    /**
+     * Deposit
+     */
+    public void depositMoney() {
+    	System.out.print("\n");
+        System.out.println("Enter amount to deposit: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine(); // consume leftover newline
+        try {
+            currentUser.getAccount().deposit(amount);
+            System.out.print("\n");
+            System.out.println("Deposit successful.");
+        } catch (IllegalArgumentException e) {
+        	System.out.print("\n");
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
-			String password = promptPassword();
-			createUser(username, password);
-		} else {
-			this.runStartingConfiguration();
-		}
-	}
+    /**
+     * Withdraw
+     */
+    public void withdrawMoney() {
+    	System.out.print("\n");
+        System.out.println("Enter amount to withdraw: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine(); // consume leftover newline
+        try {
+            currentUser.getAccount().withdraw(amount);
+            System.out.print("\n");
+            System.out.println("Withdrawal completed!");
+        } catch (IllegalArgumentException e) {
+        	System.out.print("\n");
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
-	public void logout() {
-		if (currentUser != null) {
-			System.out.println("Logged out: " + currentUser.getUsername());
-			currentUser = null;
-		} else {
-			System.out.println("No user is currently logged in.");
-		}
-	}
+    /**
+     *User balance
+     */
+    public void checkBalance() {
+    	System.out.print("\n");
+    	double unformattedDouble = currentUser.getAccount().getCurrentBalance();
+        System.out.println("Current balance: $" + String.format("%.2f", unformattedDouble));
+    }
 
-	private String promptUsername() {
-		System.out.println("Enter Username: ");
-		return this.scanner.nextLine();
-	}
+    public String promptUsername() {
+    	System.out.print("\n");
+        System.out.println("Enter Username: ");
+        return scanner.nextLine();
+    }
 
-	private String promptPassword() {
-		System.out.println("Enter Password: ");
-		return this.scanner.nextLine();
-	}
+    public String promptPassword() {
+    	System.out.print("\n");
+        System.out.println("Enter Password: ");
+        return scanner.nextLine();
+    }
 
-	private void validateAndLoginUser(String username, String password) {
-		User user = users.get(username);
-		if (user.validatePassword(password)) {
-			currentUser = user;
-			System.out.println("Logged in successfully as: " + username);
-		} else {
-			System.out.println("Incorrect password.");
-		}
-	}
+    public void displayLoginOptions() {
+    	System.out.print("\n");
+        System.out.println("Are you sure you want to login?");
+        System.out.print("\n");
+        System.out.println("> Yes");
+        System.out.println("> No");
+    }
 
-	private void createUser(String username, String password) {
-		User newUser = new User(username, password);
-		users.put(username, newUser);
-		currentUser = newUser;
-		System.out.println("Created and logged into new account!");
-	}
+    public void displayRegisterOptions() {
+    	System.out.print("\n");
+        System.out.println("Are you sure you want to register?");
+        System.out.print("\n");
+        System.out.println("> Yes");
+        System.out.println("> No");
+    }
 
-	public boolean checkYes(String input) {
-		return input.equalsIgnoreCase("yes");
-	}
+    public String handleUserMenuInput() {
+        String input = scanner.nextLine().toLowerCase();
+        while (checkIncorrectUserMenuInput(input)) {
+            System.out.println("Please enter a correct menu selection.");
+            input = scanner.nextLine().toLowerCase();
+        }
+        return input;
+    }
 
-	public boolean checkNo(String input) {
-		return input.equalsIgnoreCase("no");
-	}
+    public boolean checkIncorrectUserMenuInput(String input) {
+        String lowerInput = input.toLowerCase();
+        if (currentUser == null) {
+            return !(lowerInput.equals("register") || lowerInput.equals("login"));
+        } else {
+            if (currentUser.getUsername().equalsIgnoreCase("admin")) {
+                return !lowerInput.equals("logout");
+            } else {
+                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") ||
+                         lowerInput.equals("balance") || lowerInput.equals("logout"));
+            }
+        }
+    }
 
-	public String handleUserMenuInput() {
-		String input = this.scanner.nextLine().toLowerCase();
+    public String handleUserBooleanInput() {
+        String input = scanner.nextLine().toLowerCase();
+        while (checkIncorrectUserBooleanInput(input)) {
+            System.out.println("Please enter a correct menu selection");
+            input = scanner.nextLine().toLowerCase();
+        }
+        return input;
+    }
 
-		while (this.checkIncorrectUserMenuInput(input)) {
-			System.out.println("Please enter a correct menu selection.");
-			input = this.scanner.nextLine().toLowerCase();
-		}
+    public boolean checkIncorrectUserBooleanInput(String input) {
+        String lowerInput = input.toLowerCase();
+        return !(lowerInput.equals("yes") || lowerInput.equals("no"));
+    }
 
-		return input;
-	}
+    public boolean checkYes(String input) {
+        return input.equalsIgnoreCase("yes");
+    }
 
-	public boolean checkIncorrectUserMenuInput(String input) {
-		String lowerInput = input.toLowerCase();
+    public boolean checkNo(String input) {
+        return input.equalsIgnoreCase("no");
+    }
 
-		if (currentUser == null) {
-			return !(lowerInput.equals("register") || lowerInput.equals("login"));
-		} else {
-			return !lowerInput.equals("logout");
-		}
-	}
-
-	public String handleUserBooleanInput() {
-		String input = this.scanner.nextLine().toLowerCase();
-
-		while (this.checkIncorrectUserBooleanInput(input)) {
-			System.out.println("Please enter a correct menu selection.");
-			input = this.scanner.nextLine().toLowerCase();
-		}
-
-		return input;
-	}
-
-	public boolean checkIncorrectUserBooleanInput(String input) {
-		String lowerInput = input.toLowerCase();
-
-		return !(lowerInput.equals("yes") || lowerInput.equals("no"));
-	}
-
-	public void displayWelcomeMessage() {
-		System.out.println("Welcome to the bank.");
-	}
-
-	public void displayMenuOptions() {
-		if (currentUser == null) {
-			System.out.println("\nMENU OPTIONS:");
-			System.out.println("> REGISTER");
-			System.out.println("> LOGIN");
-		} else {
-			System.out.println("Welcome, "+ currentUser.getUsername() + "!");
-			System.out.println("\nMENU OPTIONS:");
-			System.out.println("> LOGOUT");
-		}
-	}
-
-	public void withdraw(double amount) {
-		if(amount > this.balance || amount < 0) {
-			throw new IllegalArgumentException();
-		}
-		this.balance -= amount;
-		System.out.println("Withdrawl completed!")
-	}
-
-	public double getCurrentBalance() {
-		return this.balance;
-	}
-}
-
-	public void displayLoginOptions() {
-		System.out.println("Are you sure you want to login? If not, you will be taken to the main menu.");
-		System.out.println("> YES");
-		System.out.println("> NO");
-	}
-
-	public void displayRegisterOptions() {
-		System.out.println("Are you sure you want to register? If not, you will be taken to the main menu.");
-		System.out.println("> YES");
-		System.out.println("> NO");
-	}
+    //Helper Methods:
+    public void registerUserForTest(String username, String password) {
+        User newUser = new User(username, password);
+        users.put(username, newUser);
+        currentUser = newUser;
+    }
+    public void deposit(double amount) {
+        currentUser.getAccount().deposit(amount);
+    }
+    public void withdraw(double amount) {
+        currentUser.getAccount().withdraw(amount);
+    }
+    public double getCurrentBalance() {
+        return currentUser.getAccount().getCurrentBalance();
+    }
 }
