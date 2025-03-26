@@ -34,7 +34,7 @@ public class Menu {
             } else if (menuChoice.equalsIgnoreCase("login")) {
                 userLogin();
             } else {
-                System.out.println("Act is invalid");
+                System.out.println("The selection is invalid.");
             }
         } else {
         	//Logged in
@@ -71,7 +71,7 @@ public class Menu {
             System.out.println("> Login");
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("Admin")) {
-                System.out.println("\n" + "Welcome, Admin!");
+                System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Logout");
             } else {
@@ -117,7 +117,7 @@ public class Menu {
      */
     public void logout() {
         if (currentUser != null) {
-            System.out.println("\n" + "Successfully Logged out user " + currentUser.getUsername()+ "." + "\n");
+            System.out.println("\n" + "Successfully logged out user " + currentUser.getUsername()+ "." + "\n");
             currentUser = null;
         } else {
             System.out.println("\n" + "User is not logged in." + "\n");
@@ -136,7 +136,7 @@ public class Menu {
             if (username.equalsIgnoreCase("admin")) {
                 if (password.equals("xyz")) {
                     currentUser = new User("admin", "xyz");
-                    System.out.println("Admin logged in successfully.");
+                    System.out.println("\n" + "Admin user logged in successfully.");
                 } else {
                     System.out.println("Invalid admin credentials.");
                 }
