@@ -8,11 +8,12 @@ public class Menu {
 	private Scanner scanner;
 	private HashMap<String, User> users;  // Store registered users
 	private User currentUser;             // Track the logged-in user
-
+	private double balance;
 	public Menu() {
 		this.scanner = new Scanner(System.in);
 		this.users = new HashMap<>();
 		this.currentUser = null;
+		this.balance= 100;
 	}
 
 	public void runStartingConfiguration() {
@@ -176,6 +177,19 @@ public class Menu {
 			System.out.println("> LOGOUT");
 		}
 	}
+
+	public void withdraw(double amount) {
+		if(amount > this.balance || amount < 0) {
+			throw new IllegalArgumentException();
+		}
+		this.balance -= amount;
+		System.out.println("Withdrawl completed!")
+	}
+
+	public double getCurrentBalance() {
+		return this.balance;
+	}
+}
 
 	public void displayLoginOptions() {
 		System.out.println("Are you sure you want to login? If not, you will be taken to the main menu.");
