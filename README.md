@@ -50,6 +50,8 @@ What commands are needed to compile and run your code from the command line (ple
 
 To run the program, run the command
 ```
+chmod +x RunBankingApp.sh
+chmod 777 RunBankingApp.sh
 ./RunBankingApp.sh
 ```
 in the root folder of the project.
