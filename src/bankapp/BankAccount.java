@@ -1,9 +1,14 @@
 package bankapp;
+
+import java.util.ArrayList;
+
 public class BankAccount {
     private double balance;
 
     private double fraudThreshold = 10000;
     private double interestRate = 0.05; // 5% interest rate
+    private ArrayList<String> transactionHistory = new ArrayList<>();
+
     
     public BankAccount() {
         this.balance = 0;  // New account opens with re$0
@@ -23,6 +28,7 @@ public class BankAccount {
         }
 
         this.balance += amount;
+        transactionHistory.add("Deposited: $" + amount);
     }
     /**
      * Withdraw the given amount from the account
@@ -37,6 +43,7 @@ public class BankAccount {
                                                + this.fraudThreshold + " for withdrawal.");
         }
         this.balance -= amount;
+        transactionHistory.add("Withdrew: $" + amount);
     }
     
     public void transfer(double amount, BankAccount otherAccount) {
@@ -49,6 +56,8 @@ public class BankAccount {
         }
     	otherAccount.deposit(amount);
     	this.withdraw(amount);
+    	transactionHistory.add("Transferred $" + amount + " to another account.");
+
     }
     /**
      * Returns the current account balance
@@ -61,6 +70,11 @@ public class BankAccount {
         //Change the value associated with fraudThreshold as needed for fraud detection
         return amount > this.fraudThreshold;
     }
+    
+    public ArrayList<String> getTransactionHistory() {
+        return transactionHistory;
+    }
+
 
     public double calculateInterest(double years) {
         if (years < 0) {
