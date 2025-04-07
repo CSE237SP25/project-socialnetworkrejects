@@ -6,7 +6,6 @@ public class Main {
 		Menu m = new Menu();
 		m.runStartingConfiguration();
 		
-		// TODO Auto-generated method stub
 
 	}
 

@@ -3,6 +3,7 @@ public class BankAccount {
     private double balance;
 
     private double fraudThreshold = 10000;
+    private double interestRate = 0.05; // 5% interest rate
     
     public BankAccount() {
         this.balance = 0;  // New account opens with re$0
@@ -60,5 +61,15 @@ public class BankAccount {
         //Change the value associated with fraudThreshold as needed for fraud detection
         return amount > this.fraudThreshold;
     }
+
+    public double calculateInterest(double years) {
+        if (years < 0) {
+            throw new IllegalArgumentException("Years cannot be negative.");
+        }
+        // Calculate interest based on the current balance and interest rate
+        double interest = this.balance * this.interestRate * years;
+        return interest;
+    }
+
 
 }
