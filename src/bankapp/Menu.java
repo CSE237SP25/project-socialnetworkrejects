@@ -36,7 +36,8 @@ public class Menu {
             } else {
                 System.out.println("The selection is invalid.");
             }
-        } else {
+        } 
+        else {
         	//Logged in
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 // Admin
@@ -45,16 +46,26 @@ public class Menu {
                 } else {
                     System.out.println("logout");
                 }
-            } else {
+            } 
+            else {
                 if (menuChoice.equalsIgnoreCase("deposit")) {
                     depositMoney();
-                } else if (menuChoice.equalsIgnoreCase("withdraw")) {
+                } 
+                else if (menuChoice.equalsIgnoreCase("withdraw")) {
                     withdrawMoney();
-                } else if (menuChoice.equalsIgnoreCase("balance")) {
+                }
+                else if (menuChoice.equalsIgnoreCase("interest calculator")) {
+                    System.out.println("\nGiving a 1 year calculation of interest.");
+                    System.out.print("Interest generated in 1 year: $");
+                    calculateInterest(1); // Placeholder for interest calculation
+                } 
+                else if (menuChoice.equalsIgnoreCase("balance")) {
                     checkBalance();
-                } else if (menuChoice.equalsIgnoreCase("logout")) {
+                } 
+                else if (menuChoice.equalsIgnoreCase("logout")) {
                     logout();
-                } else {
+                } 
+                else {
                     System.out.println("Invalid action");
                 }
             }
@@ -65,11 +76,14 @@ public class Menu {
      * Main menu
      */
     public void displayMenuOptions() {
+        //user not logged in
         if (currentUser == null) {
             System.out.println("[ Menu Options ]");
             System.out.println("> Register");
             System.out.println("> Login");
-        } else {
+        } 
+        // If a user is logged in
+        else {
             if (currentUser.getUsername().equalsIgnoreCase("Admin")) {
                 System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
@@ -79,6 +93,7 @@ public class Menu {
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Deposit");
                 System.out.println("> Withdraw");
+                System.out.println("> Interest Calculator");
                 System.out.println("> Balance");
                 System.out.println("> Logout");
             }
@@ -267,7 +282,7 @@ public class Menu {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 return !lowerInput.equals("logout");
             } else {
-                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") ||
+                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || lowerInput.equals("interest calculator") ||
                          lowerInput.equals("balance") || lowerInput.equals("logout"));
             }
         }
@@ -306,6 +321,9 @@ public class Menu {
     }
     public void withdraw(double amount) {
         currentUser.getAccount().withdraw(amount);
+    }
+    public void calculateInterest(double years) {
+        System.out.println(currentUser.getAccount().calculateInterest(years));
     }
     public double getCurrentBalance() {
         return currentUser.getAccount().getCurrentBalance();
