@@ -34,4 +34,37 @@ public class BankAccountTests {
 			assertTrue(e != null);
 		}
 	}
+
+	public void testWithdraw() {
+		// test values
+		m.registerUserForTest("testuser", "testpass");
+		m.deposit(100);
+		m.withdraw(25);
+		assertEquals(75.00, m.getCurrentBalance(), 0.005);
+	}
+
+	@Test
+	public void testWithdrawInsufficientFunds() {
+		m.registerUserForTest("testuser", "testpass");
+		m.deposit(50);
+		try {
+			m.withdraw(200);
+			fail("Expected an IllegalArgumentException for insufficient funds.");
+		} catch (IllegalArgumentException e) {
+			assertTrue(e != null);
+		}
+	}
+
+	@Test
+	public void testWithdrawNegativeFunds() {
+		m.registerUserForTest("testuser", "testpass");
+		try {
+			m.withdraw(-25);
+			fail("Expected an IllegalArgumentException for a negative withdrawal.");
+		}
+		catch (IllegalArgumentException e) {
+			assertTrue(e != null);
+		}
+	}
+
 }
