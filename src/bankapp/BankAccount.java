@@ -1,8 +1,11 @@
 package bankapp;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class BankAccount {
+    private User user; // Reference to the User who owns this account
+
     private double balance;
 
     private double fraudThreshold = 10000;
@@ -10,8 +13,9 @@ public class BankAccount {
     private ArrayList<String> transactionHistory = new ArrayList<>();
 
     
-    public BankAccount() {
+    public BankAccount(User user) {
         this.balance = 0;  // New account opens with re$0
+        this.user = user;
         //Potential New Idea: Add account minimum like real bank accounts
     }
     /**
@@ -28,7 +32,7 @@ public class BankAccount {
         }
 
         this.balance += amount;
-        transactionHistory.add("Deposited: $" + amount);
+        transactionHistory.add(generateUserTransactionUUID() + " Deposited: $" + amount);
     }
     /**
      * Withdraw the given amount from the account
@@ -85,5 +89,20 @@ public class BankAccount {
         return interest;
     }
 
+    public String generateTransactionUUID() {
+        //generates a unique key for each transaction
+        return UUID.randomUUID().toString();
+    }
+
+    /*
+    Generates a unique transaction UUID for the user by combining the username and 
+    the account's transaction UUID (36 characters, not including the dash)
+    Example: "johnDoe-123e4567-e89b-12d3-a456-426614174000"
+    */
+    public String generateUserTransactionUUID() {
+        String userUsername = this.user.getUsername();
+        String transactionUUID = this.generateTransactionUUID();
+        return (userUsername + "-" + transactionUUID);
+    }
 
 }
