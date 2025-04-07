@@ -1,11 +1,6 @@
 package bankapp;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class BankAccount {
     private double balance;
-    private ArrayList<String> transactionHistory = new ArrayList<>();
 
     private double fraudThreshold = 10000;
     
@@ -27,7 +22,6 @@ public class BankAccount {
         }
 
         this.balance += amount;
-        transactionHistory.add("Deposited: $" + amount);
     }
     /**
      * Withdraw the given amount from the account
@@ -42,7 +36,6 @@ public class BankAccount {
                                                + this.fraudThreshold + " for withdrawal.");
         }
         this.balance -= amount;
-        transactionHistory.add("Withdrew: $" + amount);
     }
     
     public void transfer(double amount, BankAccount otherAccount) {
@@ -55,11 +48,6 @@ public class BankAccount {
         }
     	otherAccount.deposit(amount);
     	this.withdraw(amount);
-    	transactionHistory.add("Transferred $" + amount + "to another account.");
-    }
-    
-    public List<String> getTransactionHistory() {
-        return transactionHistory;
     }
     /**
      * Returns the current account balance
