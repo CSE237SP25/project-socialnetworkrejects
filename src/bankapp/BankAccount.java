@@ -7,8 +7,6 @@ public class BankAccount {
     private double balance;
     private ArrayList<String> transactionHistory = new ArrayList<>();
 
-    private double interestRate = 0.05; // Default interest rate is 5%
-
     private double fraudThreshold = 10000;
     
     public BankAccount() {
@@ -73,14 +71,6 @@ public class BankAccount {
     public boolean isFraudulentTransaction(double amount) {
         //Change the value associated with fraudThreshold as needed for fraud detection
         return amount > this.fraudThreshold;
-    }
-    public double calculateInterest(double years) {
-        if (years < 0) {
-            throw new IllegalArgumentException("Years cannot be negative.");
-        }
-        // Calculate interest based on the current balance and interest rate
-        double interest = this.balance * this.interestRate * years;
-        return interest;
     }
 
 }
