@@ -11,7 +11,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.account = new BankAccount();
+        this.account = new BankAccount(this);
     }
 
     public String getUsername() {
@@ -25,4 +25,5 @@ public class User {
     public BankAccount getAccount() {
         return account;
     }
+
 }
