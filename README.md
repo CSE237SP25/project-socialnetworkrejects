@@ -2,10 +2,10 @@
 
 Team Members:
 
-*
-*
-*
-*
+* Bhakti Malhotra
+* Martin Ibarra
+* Tyler Dinh
+* Jacob Mathew
 
 For each iteration you should answer the following:
 
