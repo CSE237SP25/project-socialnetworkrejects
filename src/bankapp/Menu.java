@@ -42,11 +42,13 @@ public class Menu {
         	//Logged in
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 // Admin
-                if (menuChoice.equalsIgnoreCase("logout")) {
-                    logout();
-                } else {
-                    System.out.println("logout");
-                }
+            	if (menuChoice.equalsIgnoreCase("view all transactions")) {
+            	    viewAllTransactions();
+            	} else if (menuChoice.equalsIgnoreCase("logout")) {
+            	    logout();
+            	} else {
+            	    System.out.println("Invalid");
+            	}
             } 
             else {
                 if (menuChoice.equalsIgnoreCase("deposit")) {
@@ -88,11 +90,12 @@ public class Menu {
         } 
         // If a user is logged in
         else {
-            if (currentUser.getUsername().equalsIgnoreCase("Admin")) {
-                System.out.println("\n" + "Welcome, admin user!");
-                System.out.println("[ Menu Options ]");
-                System.out.println("> Logout");
-            } else {
+        	if (currentUser.getUsername().equalsIgnoreCase("admin")) {
+        	    System.out.println("\n" + "Welcome, admin user!");
+        	    System.out.println("[ Menu Options ]");
+        	    System.out.println("> View All Transactions");
+        	    System.out.println("> Logout");
+        	} else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Deposit");
@@ -185,7 +188,9 @@ public class Menu {
             System.out.println("\n" + "Incorrect password");
         }
     }
-    
+    /**
+     * Transaction history
+     */
     public void viewTransactionHistory() {
         System.out.println("Transaction History");
         ArrayList<String> history = currentUser.getAccount().getTransactionHistory();
@@ -198,6 +203,33 @@ public class Menu {
             }
         }
     }
+    
+    /**
+     * Admin can view all transactions
+     */
+    public void viewAllTransactions() {
+        System.out.println("All User Transactions");
+
+        if (users.isEmpty()) {
+            System.out.println("No Users");
+            return;
+        }
+
+        for (String username : users.keySet()) {
+            User user = users.get(username);
+            System.out.println("\nUser: " + username);
+
+            ArrayList<String> history = user.getAccount().getTransactionHistory();
+            if (history.isEmpty()) {
+                System.out.println(" No Transactions");
+            } else {
+                for (String entry : history) {
+                    System.out.println("  - " + entry);
+                }
+            }
+        }
+    }
+
 
 
     /**
