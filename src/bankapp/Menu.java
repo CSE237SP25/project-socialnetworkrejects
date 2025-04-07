@@ -1,5 +1,6 @@
 package bankapp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -54,6 +55,9 @@ public class Menu {
                 else if (menuChoice.equalsIgnoreCase("withdraw")) {
                     withdrawMoney();
                 }
+                else if (menuChoice.equalsIgnoreCase("history")) {
+                	viewTransactionHistory();
+                }
                 else if (menuChoice.equalsIgnoreCase("interest calculator")) {
                     System.out.println("\nGiving a 1 year calculation of interest.");
                     System.out.print("Interest generated in 1 year: $");
@@ -93,6 +97,7 @@ public class Menu {
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Deposit");
                 System.out.println("> Withdraw");
+                System.out.println("> History");
                 System.out.println("> Interest Calculator");
                 System.out.println("> Balance");
                 System.out.println("> Logout");
@@ -180,6 +185,20 @@ public class Menu {
             System.out.println("\n" + "Incorrect password");
         }
     }
+    
+    public void viewTransactionHistory() {
+        System.out.println("Transaction History");
+        ArrayList<String> history = currentUser.getAccount().getTransactionHistory();
+
+        if (history.isEmpty()) {
+            System.out.println("No Transactions Made");
+        } else {
+            for (String entry : history) {
+                System.out.println("- " + entry);
+            }
+        }
+    }
+
 
     /**
      * Creates the user
