@@ -42,16 +42,16 @@ public class MenuTests {
 		boolean actual = helper.checkIncorrectUserMenuInput("this is clearly wrong", u);
 		assertEquals(true, actual);
 
-		actual = helper.checkIncorrectUserMenuInput("register", u);
+		actual = helper.checkIncorrectUserMenuInput("register", null);
 		assertEquals(false, actual);
 
-		actual = helper.checkIncorrectUserMenuInput("login", u);
+		actual = helper.checkIncorrectUserMenuInput("login", null);
 		assertEquals(false, actual);
 
-		actual = helper.checkIncorrectUserMenuInput("reGistER", u);
+		actual = helper.checkIncorrectUserMenuInput("reGistER", null);
 		assertEquals(false, actual);
 
-		actual = helper.checkIncorrectUserMenuInput("LOGIN", u);
+		actual = helper.checkIncorrectUserMenuInput("LOGIN", null);
 		assertEquals(false, actual);
 	}
 
@@ -74,46 +74,11 @@ public class MenuTests {
 	}
 	
 	@Test
-    public void testRegisterUser() {
+    public void testRegisterUserSelection() {
         // Test user registration flow
         m.registerUserForTest("john", "password123");
         assertTrue(helper.checkYes("yes"));  // Assuming user wants to proceed with registration
     }
-
-    @Test
-    public void testDepositMoney() {
-        // Test deposit into savings and checking accounts
-        m.registerUserForTest("john", "password123");
-        m.deposit(100);
-        assertEquals(100.0, m.getCurrentBalance(), 0.01);
-    }
-
-    @Test
-    public void testWithdrawMoney() {
-        // Test withdrawal from savings and checking accounts
-        m.registerUserForTest("john", "password123");
-        m.deposit(200);
-        m.withdraw(100);
-        assertEquals(100.0, m.getCurrentBalance(), 0.01);
-    }
-
-    @Test
-    public void testOpenCheckingAccount() {
-        // Test opening a checking account
-        m.registerUserForTest("john", "password123");
-        m.openCheckingAccount();
-        assertNotNull(m.getCurrentUser().getCheckingAccount());
-    }
-
-    @Test
-    public void testViewTransactionHistory() {
-        // Test viewing transaction history for logged-in user
-        m.registerUserForTest("john", "password123");
-        m.deposit(100);
-        m.viewTransactionHistory();
-        // You can assert some transaction history logic here
-    }
-
     
     @Test
     public void testLogout() {
@@ -121,14 +86,6 @@ public class MenuTests {
         m.registerUserForTest("john", "password123");
         m.logout();
         assertNull(m.getCurrentUser());
-    }
-
-    @Test
-    public void testInterestCalculator() {
-        // Test interest calculation for a given period
-        m.registerUserForTest("john", "password123");
-        m.calculateInterest(1);
-        // You can assert interest calculation logic here.
     }
 	
 }

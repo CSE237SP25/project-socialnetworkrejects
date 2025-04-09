@@ -87,11 +87,14 @@ public class Menu {
             depositMoney();
         } else if (menuChoice.equalsIgnoreCase("withdraw")) {
             withdrawMoney();
+        } else if (menuChoice.equalsIgnoreCase("transfer")) {
+            System.out.println("\nTransferring money to another arbitrary savings account.");
+            transferMoney();
         } else if (menuChoice.equalsIgnoreCase("history")) {
             viewTransactionHistory();
         } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
-            System.out.println("\nGiving a 1 year calculation of interest.");
-            System.out.print("Interest generated in 1 year: $");
+            System.out.println("\nGiving a 1 year calculation of potential interest on money within savings account.");
+            System.out.print("Potential interest if money was left for 1 year within savings account: $");
             calculateInterest(1); // Placeholder for interest calculation
         } else if (menuChoice.equalsIgnoreCase("balance")) {
             checkBalance();
@@ -190,14 +193,14 @@ public class Menu {
         }
     }
     /**
-     * Transaction history
+     * Personal User's Transaction history
      */
     public void viewTransactionHistory() {
-        System.out.println("Transaction History");
+        System.out.println("\nNow viewing personal transaction history, with a unique ID for each transaction.");
         ArrayList<String> history = currentUser.getSavingsAccount().getTransactionHistory();
 
         if (history.isEmpty()) {
-            System.out.println("No Transactions Made");
+            System.out.println("\nYou have not made any transactions.");
         } else {
             for (String entry : history) {
                 System.out.println("- " + entry);
@@ -209,10 +212,10 @@ public class Menu {
      * Admin can view all transactions
      */
     public void viewAllTransactions() {
-        System.out.println("All User Transactions");
+        System.out.println("\nNow viewing all user transactions, with a unique ID for each transaction.");
 
         if (users.isEmpty()) {
-            System.out.println(" No users, global history cannot be accessed.");
+            System.out.println("No users, so the global transaction history cannot be accessed.");
             return;
         }
 
@@ -222,7 +225,7 @@ public class Menu {
 
             ArrayList<String> history = user.getSavingsAccount().getTransactionHistory();
             if (history.isEmpty()) {
-                System.out.println(" No Transactions");
+                System.out.println("This user currently has no transactions.");
             } else {
                 for (String entry : history) {
                     System.out.println("  - " + entry);
@@ -252,7 +255,7 @@ public class Menu {
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
 
-        System.out.println("Enter amount to deposit: ");
+        System.out.println("\nEnter amount to deposit: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
 
@@ -286,7 +289,7 @@ public class Menu {
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
 
-        System.out.println("Enter amount to withdraw: ");
+        System.out.println("\nEnter amount to withdraw: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
 
@@ -307,6 +310,38 @@ public class Menu {
         } else {
             System.out.println("Invalid account choice or Checking Account not opened.");
         }
+    }
+
+    //IMPORTANT: only to an arbitrary user's savings account that already exists for now
+    public void transferMoney() {
+        this.menuDisplayHelper.displayTransferOptions(currentUser);
+
+        int accountChoice = scanner.nextInt();
+        scanner.nextLine(); // consume newline character
+
+        System.out.println("\nEnter amount to transfer: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine(); // consume newline character
+
+        try {
+            handleAccountTransferChoice(accountChoice, amount);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    public void handleAccountTransferChoice(int accountChoice, double amount) {
+        if (accountChoice == 1) {
+            currentUser.getSavingsAccount().transfer(amount, new SavingsAccount(new User("test", "passTest")));
+            System.out.println("\nTransfer successful from Savings Account to another arbitrary savings account.");
+        } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
+            currentUser.getCheckingAccount().withdraw(amount);
+            System.out.println("\nWithdrawal successful from Checking Account to another arbitrary savings account.");
+        } else {
+            System.out.println("Invalid account choice or Checking Account not opened.");
+        }
+
     }
 
     /**

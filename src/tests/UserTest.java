@@ -1,6 +1,8 @@
 package tests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.Test;
 import bankapp.User;
 
@@ -29,5 +31,13 @@ public class UserTest {
     public void testCaseSensitivity() {
         User user = new User("chad", "SecretPass");
         assertFalse(user.validatePassword("secretpass"));
+    }
+
+    @Test
+    public void testOpenCheckingAccount() {
+        // Test opening a checking account
+        User user = new User("3am", "now4am");
+        user.openCheckingAccount();
+        assertNotNull(user.getCheckingAccount());
     }
 }
