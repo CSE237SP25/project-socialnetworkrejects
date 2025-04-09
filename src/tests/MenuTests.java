@@ -1,6 +1,9 @@
 package tests;
 
 import bankapp.Menu;
+import bankapp.MenuInputHelper;
+import bankapp.User;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -13,57 +16,61 @@ import static org.junit.Assert.assertNull;
 public class MenuTests {
 
     private Menu m;
+    private MenuInputHelper helper;
+    private User u;
 
     @Before
     public void setUp() {
         m = new Menu();
+        helper = new MenuInputHelper();
+        u = new User("testUser", "testPassword"); 
     }
     
     @Test
     public void testCheckYes() {
-        assertTrue(m.checkYes("yes"));
-        assertFalse(m.checkYes("no"));
+        assertTrue(helper.checkYes("yes"));
+        assertFalse(helper.checkYes("no"));
     }
 
     @Test
     public void testCheckNo() {
-        assertTrue(m.checkNo("no"));
-        assertFalse(m.checkNo("yes"));
+        assertTrue(helper.checkNo("no"));
+        assertFalse(helper.checkNo("yes"));
     }
 
 	@Test
 	public void testCheckIncorrectUserMenuInput() {
-		boolean actual = m.checkIncorrectUserMenuInput("this is clearly wrong");
+		boolean actual = helper.checkIncorrectUserMenuInput("this is clearly wrong", u);
 		assertEquals(true, actual);
 
-		actual = m.checkIncorrectUserMenuInput("register");
+		actual = helper.checkIncorrectUserMenuInput("register", u);
 		assertEquals(false, actual);
 
-		actual = m.checkIncorrectUserMenuInput("login");
+		actual = helper.checkIncorrectUserMenuInput("login", u);
 		assertEquals(false, actual);
 
-		actual = m.checkIncorrectUserMenuInput("reGistER");
+		actual = helper.checkIncorrectUserMenuInput("reGistER", u);
 		assertEquals(false, actual);
 
-		actual = m.checkIncorrectUserMenuInput("LOGIN");
+		actual = helper.checkIncorrectUserMenuInput("LOGIN", u);
 		assertEquals(false, actual);
 	}
 
 	@Test
 	public void testCheckIncorrectUserBooleanInput() {
-		boolean actual = m.checkIncorrectUserBooleanInput("this is clearly wrong");
+		boolean actual = helper.checkIncorrectUserBooleanInput("this is clearly wrong");
 		assertEquals(true, actual);
 
-		actual = m.checkIncorrectUserBooleanInput("yes");
+		actual = helper.checkIncorrectUserBooleanInput("yes");
 		assertEquals(false, actual);
 
-		actual = m.checkIncorrectUserBooleanInput("no");
+		actual = helper.checkIncorrectUserBooleanInput("no");
 		assertEquals(false, actual);
 
-		actual = m.checkIncorrectUserBooleanInput("yES");
+		actual = helper.checkIncorrectUserBooleanInput("yES");
 		assertEquals(false, actual);
 
-		actual = m.checkIncorrectUserBooleanInput("NO");
+		actual = helper.checkIncorrectUserBooleanInput("NO");
 		assertEquals(false, actual);
 	}
 	
@@ -71,7 +78,7 @@ public class MenuTests {
     public void testRegisterUser() {
         // Test user registration flow
         m.registerUserForTest("john", "password123");
-        assertTrue(m.checkYes("yes"));  // Assuming user wants to proceed with registration
+        assertTrue(helper.checkYes("yes"));  // Assuming user wants to proceed with registration
     }
 
     @Test

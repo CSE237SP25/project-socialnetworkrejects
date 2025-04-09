@@ -9,19 +9,21 @@ public class Menu {
     private HashMap<String, User> users;
     private User currentUser;
     private MenuDisplayHelper menuDisplayHelper;
+    private MenuInputHelper menuInputHelper;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
         this.users = new HashMap<>();
         this.currentUser = null;
         this.menuDisplayHelper = new MenuDisplayHelper();
+        this.menuInputHelper = new MenuInputHelper();
     }
 
     public void runStartingConfiguration() {
         this.menuDisplayHelper.displayWelcomeMessage();
         while (true) {
             this.menuDisplayHelper.displayMenuOptions(this.currentUser);
-            String menuChoice = handleUserMenuInput();
+            String menuChoice = this.menuInputHelper.handleUserMenuInput(scanner, currentUser);
             handleUserMenuSelection(menuChoice);
         }
     }
@@ -34,35 +36,14 @@ public class Menu {
             handleUnloggedUserMenuSelection(menuChoice);
         } else {
             // Logged in
+
+            //The user is an admin
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                // Admin
-                if (menuChoice.equalsIgnoreCase("view all transactions")) {
-                    viewAllTransactions();
-                } else if (menuChoice.equalsIgnoreCase("logout")) {
-                    logout();
-                } else {
-                    System.out.println("Invalid");
-                }
-            } else {
-                if (menuChoice.equalsIgnoreCase("deposit")) {
-                    depositMoney();
-                } else if (menuChoice.equalsIgnoreCase("withdraw")) {
-                    withdrawMoney();
-                } else if (menuChoice.equalsIgnoreCase("history")) {
-                    viewTransactionHistory();
-                } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
-                    System.out.println("\nGiving a 1 year calculation of interest.");
-                    System.out.print("Interest generated in 1 year: $");
-                    calculateInterest(1); // Placeholder for interest calculation
-                } else if (menuChoice.equalsIgnoreCase("balance")) {
-                    checkBalance();
-                } else if (menuChoice.equalsIgnoreCase("open checking account")) {
-                    openCheckingAccount();
-                } else if (menuChoice.equalsIgnoreCase("logout")) {
-                    logout();
-                } else {
-                    System.out.println("Invalid action");
-                }
+                handleAdminMenuSelection(menuChoice);
+            } 
+            //The user is a normal user
+            else {
+                handleLoggedUserMenuSelection(menuChoice);
             }
         }
     }
@@ -78,12 +59,45 @@ public class Menu {
         }
     }
 
+    public void handleAdminMenuSelection(String menuChoice) {
+        if (menuChoice.equalsIgnoreCase("view all transactions")) {
+            viewAllTransactions();
+        } else if (menuChoice.equalsIgnoreCase("logout")) {
+            logout();
+        } else {
+            System.out.println("Invalid action.");
+        }
+        
+    }
+
+    public void handleLoggedUserMenuSelection(String menuChoice) {
+        if (menuChoice.equalsIgnoreCase("deposit")) {
+            depositMoney();
+        } else if (menuChoice.equalsIgnoreCase("withdraw")) {
+            withdrawMoney();
+        } else if (menuChoice.equalsIgnoreCase("history")) {
+            viewTransactionHistory();
+        } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
+            System.out.println("\nGiving a 1 year calculation of interest.");
+            System.out.print("Interest generated in 1 year: $");
+            calculateInterest(1); // Placeholder for interest calculation
+        } else if (menuChoice.equalsIgnoreCase("balance")) {
+            checkBalance();
+        } else if (menuChoice.equalsIgnoreCase("open checking account")) {
+            openCheckingAccount();
+        } else if (menuChoice.equalsIgnoreCase("logout")) {
+            logout();
+        } else {
+            System.out.println("Invalid action");
+        }
+    }
+
     /**
      * Creates a new user
      */
     public void registerUser() {
         this.menuDisplayHelper.displayRegisterOptions();
-        if (checkYes(handleUserBooleanInput())) {
+        if (menuInputHelper.checkYes(menuInputHelper.handleUserBooleanInput(scanner))) {
             String username = promptUsername();
             if (users.containsKey(username)) {
                 System.out.println("Username already exists. Please try again.");
@@ -113,7 +127,7 @@ public class Menu {
      */
     public void userLogin() {
         this.menuDisplayHelper.displayLoginOptions();
-        if (checkYes(handleUserBooleanInput())) {
+        if (menuInputHelper.checkYes(menuInputHelper.handleUserBooleanInput(scanner))) {
             String username = promptUsername();
             String password = promptPassword();
             // If admin
@@ -298,52 +312,6 @@ public class Menu {
     	System.out.print("\n");
         System.out.println("Enter Password: ");
         return scanner.nextLine();
-    }
-
-    public String handleUserMenuInput() {
-        String input = scanner.nextLine().toLowerCase();
-        while (checkIncorrectUserMenuInput(input)) {
-            System.out.println("Please enter a correct menu selection.");
-            input = scanner.nextLine().toLowerCase();
-        }
-        return input;
-    }
-
-    public boolean checkIncorrectUserMenuInput(String input) {
-        String lowerInput = input.toLowerCase();
-        if (currentUser == null) {
-            return !(lowerInput.equals("register") || lowerInput.equals("login"));
-        } else {
-            if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                return !lowerInput.equals("logout") && !lowerInput.equals("view all transactions");
-            } else {
-                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || 
-                         lowerInput.equals("interest calculator") || lowerInput.equals("balance") || 
-                         lowerInput.equals("open checking account") || lowerInput.equals("logout"));
-            }
-        }
-    }
-
-    public String handleUserBooleanInput() {
-        String input = scanner.nextLine().toLowerCase();
-        while (checkIncorrectUserBooleanInput(input)) {
-            System.out.println("Please enter a correct menu selection");
-            input = scanner.nextLine().toLowerCase();
-        }
-        return input;
-    }
-
-    public boolean checkIncorrectUserBooleanInput(String input) {
-        String lowerInput = input.toLowerCase();
-        return !(lowerInput.equals("yes") || lowerInput.equals("no"));
-    }
-
-    public boolean checkYes(String input) {
-        return input.equalsIgnoreCase("yes");
-    }
-
-    public boolean checkNo(String input) {
-        return input.equalsIgnoreCase("no");
     }
 
     //Helper Methods:
