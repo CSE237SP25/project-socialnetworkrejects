@@ -49,6 +49,7 @@ Iteration 2:
 We intend to complete user stories related to updating the UI and implementing all of the user actions fully. Because Iteration 3 is the last iteration, it is important that we ensure that if our program were to be adapted by a real bank, that we do not leak sensitive information about other users or the bank itself. It is important for our group to update the admin's abilities to watch over a user flagged as potentially making unallowed transactions, and implementing that restriction on the user itself. Updating the UI could mean we streamline the process for the user to navigate through their different actions that they can take. These are some of the many possibilities our group has considered.
 
 Is there anything that you implemented but doesn't currently work?
+
 Iteration 1:  
 
 Although we currently have the transfer method working in the backend and verified with testing, we want to implement it with our text GUI frontend so that users can transfer money to each other. To accomplish this, we will identify the same steps that were taken to include the deposit and withdraw methods in the text GUI frontend and apply them to the transfer method. We must also identify which direction we want to go with implementing the user's selection of "transfer" within the menu, because we could either have the user input a username of a user that we want to transfer to, or create an ID variable for the BankAccount class and have the user input the ID of the account they want to transfer to.
