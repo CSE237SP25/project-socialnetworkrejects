@@ -93,8 +93,8 @@ public class Menu {
         } else if (menuChoice.equalsIgnoreCase("history")) {
             viewTransactionHistory();
         } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
-            System.out.println("\nGiving a 1 year calculation of interest.");
-            System.out.print("Interest generated in 1 year: $");
+            System.out.println("\nGiving a 1 year calculation of potential interest on money within savings account.");
+            System.out.print("Potential interest if money was left for 1 year within savings account: $");
             calculateInterest(1); // Placeholder for interest calculation
         } else if (menuChoice.equalsIgnoreCase("balance")) {
             checkBalance();
@@ -193,7 +193,7 @@ public class Menu {
         }
     }
     /**
-     * Transaction history
+     * Personal User's Transaction history
      */
     public void viewTransactionHistory() {
         System.out.println("\nNow viewing personal transaction history, with a unique ID for each transaction.");
@@ -225,7 +225,7 @@ public class Menu {
 
             ArrayList<String> history = user.getSavingsAccount().getTransactionHistory();
             if (history.isEmpty()) {
-                System.out.println(" No Transactions");
+                System.out.println("This user currently has no transactions.");
             } else {
                 for (String entry : history) {
                     System.out.println("  - " + entry);
@@ -255,7 +255,7 @@ public class Menu {
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
 
-        System.out.println("Enter amount to deposit: ");
+        System.out.println("\nEnter amount to deposit: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
 
@@ -289,7 +289,7 @@ public class Menu {
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
 
-        System.out.println("Enter amount to withdraw: ");
+        System.out.println("\nEnter amount to withdraw: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
 
@@ -319,7 +319,7 @@ public class Menu {
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
 
-        System.out.println("Enter amount to transfer: ");
+        System.out.println("\nEnter amount to transfer: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
 

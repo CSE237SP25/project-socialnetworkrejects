@@ -49,8 +49,8 @@ public abstract class AbstractBankAccount {
         otherAccount.deposit(amount);
         this.withdraw(amount);
 
-        transactionHistory.add("Bank Notice: above transaction was part of a transfer to another account.");
-        otherAccount.transactionHistory.add("Bank Notice: above transaction was part of a recieved transfer from another account.");
+        transactionHistory.add("Bank Notice: above transaction was part of a transfer of $" + amount + " to another account.");
+        otherAccount.transactionHistory.add("Bank Notice: above transaction was part of a recieved transfer of $" + amount + " from another account.");
     }
 
     public double getCurrentBalance() {

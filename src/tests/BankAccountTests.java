@@ -101,4 +101,21 @@ public class BankAccountTests {
             assertTrue(e != null);
         }
     }
+
+    @Test
+    public void testInterestCalculator() {
+        savingsAccount.deposit(100);
+        double interest = savingsAccount.calculateInterest(1);
+        assertEquals(5, interest, 0.005);
+    }
+
+    @Test
+    public void testUserTransactionUUIDLength() {
+        String userTransactionUUID = user.getSavingsAccount().generateUserTransactionUUID();
+        String username = user.getUsername();
+        int usernameLength = username.length();
+
+        assertEquals(usernameLength + 37, userTransactionUUID.length());
+
+    }
 }
