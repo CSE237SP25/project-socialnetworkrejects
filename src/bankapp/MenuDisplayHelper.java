@@ -2,6 +2,16 @@ package bankapp;
 
 public class MenuDisplayHelper {
 
+    public void displayDepositOptions(User currentUser) {
+        System.out.println("\nChoose an account to deposit into:");
+        System.out.println("1. Savings Account");
+        if (currentUser.getCheckingAccount() != null) {
+            System.out.println("2. Checking Account");
+        } else {
+            System.out.println("2. Checking Account (Not Opened)");
+        }
+    }
+
     public void displayWithdrawOptions(User currentUser) {
         System.out.println("\nChoose an account to withdraw from:");
         System.out.println("1. Savings Account");
