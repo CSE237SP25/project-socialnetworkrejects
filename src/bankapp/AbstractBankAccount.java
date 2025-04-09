@@ -19,11 +19,11 @@ public abstract class AbstractBankAccount {
             throw new IllegalArgumentException("Deposit amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
-            throw new IllegalArgumentException("Potential fraudulent transaction detected, please input less than $" 
+            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
                                                + this.fraudThreshold + " for deposit.");
         }
         this.balance += amount;
-        transactionHistory.add(generateUserTransactionUUID() + " Deposited: $" + amount);
+        transactionHistory.add(generateUserTransactionUUID() + " | Deposited: $" + amount);
     }
 
     public void withdraw(double amount) {
@@ -31,24 +31,26 @@ public abstract class AbstractBankAccount {
             throw new IllegalArgumentException("Withdrawal amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
-            throw new IllegalArgumentException("Potential fraudulent transaction detected, please input less than $" 
+            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
                                                + this.fraudThreshold + " for withdrawal.");
         }
         this.balance -= amount;
-        transactionHistory.add("Withdrew: $" + amount);
+        transactionHistory.add(generateUserTransactionUUID() + " | Withdrew: $" + amount);
     }
 
     public void transfer(double amount, AbstractBankAccount otherAccount) {
         if (amount < 0 || amount > this.balance) {
-            throw new IllegalArgumentException("Transfer amount invalid");
+            throw new IllegalArgumentException("Transfer amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
-            throw new IllegalArgumentException("Potential fraudulent transaction detected, please input less than $" 
+            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
                                                + this.fraudThreshold + " for transfer.");
         }
         otherAccount.deposit(amount);
         this.withdraw(amount);
-        transactionHistory.add("Transferred $" + amount + " to another account.");
+
+        transactionHistory.add("Bank Notice: above transaction was part of a transfer to another account.");
+        otherAccount.transactionHistory.add("Bank Notice: above transaction was part of a recieved transfer from another account.");
     }
 
     public double getCurrentBalance() {

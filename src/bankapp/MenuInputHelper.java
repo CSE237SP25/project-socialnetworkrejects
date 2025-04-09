@@ -21,7 +21,8 @@ public class MenuInputHelper {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 return !lowerInput.equals("logout") && !lowerInput.equals("view all transactions");
             } else {
-                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || 
+                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || lowerInput.equals("transfer") ||
+                         lowerInput.equals("history") ||
                          lowerInput.equals("interest calculator") || lowerInput.equals("balance") || 
                          lowerInput.equals("open checking account") || lowerInput.equals("logout"));
             }

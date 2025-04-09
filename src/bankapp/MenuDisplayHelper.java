@@ -22,6 +22,16 @@ public class MenuDisplayHelper {
         }
     }
 
+    public void displayTransferOptions(User currentUser) {
+        System.out.println("\nChoose an account to transfer from:");
+        System.out.println("1. Savings Account");
+        if (currentUser.getCheckingAccount() != null) {
+            System.out.println("2. Checking Account");
+        } else {
+            System.out.println("2. Checking Account (Not Opened)");
+        }
+    }
+
     public void displayLoginOptions() {
     	System.out.print("\n");
         System.out.println("Are you sure you want to login?");
@@ -60,6 +70,7 @@ public class MenuDisplayHelper {
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Deposit");
                 System.out.println("> Withdraw");
+                System.out.println("> Transfer");
                 System.out.println("> History");
                 System.out.println("> Interest Calculator");
                 System.out.println("> Balance");
