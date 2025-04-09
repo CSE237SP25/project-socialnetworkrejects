@@ -2,6 +2,16 @@ package bankapp;
 
 public class MenuDisplayHelper {
 
+    public void displayWithdrawOptions(User currentUser) {
+        System.out.println("\nChoose an account to withdraw from:");
+        System.out.println("1. Savings Account");
+        if (currentUser.getCheckingAccount() != null) {
+            System.out.println("2. Checking Account");
+        } else {
+            System.out.println("2. Checking Account (Not Opened)");
+        }
+    }
+
     public void displayLoginOptions() {
     	System.out.print("\n");
         System.out.println("Are you sure you want to login?");

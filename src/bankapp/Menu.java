@@ -256,13 +256,7 @@ public class Menu {
      * Withdraw
      */
     public void withdrawMoney() {
-        System.out.println("\nChoose an account to withdraw from:");
-        System.out.println("1. Savings Account");
-        if (currentUser.getCheckingAccount() != null) {
-            System.out.println("2. Checking Account");
-        } else {
-            System.out.println("2. Checking Account (Not Opened)");
-        }
+        this.menuDisplayHelper.displayWithdrawOptions(currentUser);
 
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
@@ -272,17 +266,21 @@ public class Menu {
         scanner.nextLine(); // consume newline character
 
         try {
-            if (accountChoice == 1) {
-                currentUser.getSavingsAccount().withdraw(amount);
-                System.out.println("\nWithdrawal successful from Savings Account.");
-            } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
-                currentUser.getCheckingAccount().withdraw(amount);
-                System.out.println("\nWithdrawal successful from Checking Account.");
-            } else {
-                System.out.println("Invalid account choice or Checking Account not opened.");
-            }
+            handleAccountWithdrawChoice(accountChoice, amount);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void handleAccountWithdrawChoice(int accountChoice, double amount) {
+        if (accountChoice == 1) {
+            currentUser.getSavingsAccount().withdraw(amount);
+            System.out.println("\nWithdrawal successful from Savings Account.");
+        } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
+            currentUser.getCheckingAccount().withdraw(amount);
+            System.out.println("\nWithdrawal successful from Checking Account.");
+        } else {
+            System.out.println("Invalid account choice or Checking Account not opened.");
         }
     }
 
@@ -343,4 +341,5 @@ public class Menu {
     public User getCurrentUser() {
         return currentUser;
     }
+    //
 }
