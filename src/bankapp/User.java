@@ -3,15 +3,13 @@ package bankapp;
 public class User {
     private String username;
     private String password;
-    private BankAccount account;
+    private SavingsAccount savingsAccount;
+    private CheckingAccount checkingAccount; 
 
-    /**
-     * Creates a new User with a username, password, and a fresh BankAccount.
-     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.account = new BankAccount(this);
+        this.savingsAccount = new SavingsAccount(this);
     }
 
     public String getUsername() {
@@ -21,9 +19,19 @@ public class User {
     public boolean validatePassword(String password) {
         return this.password.equals(password);
     }
-    
-    public BankAccount getAccount() {
-        return account;
+
+    public SavingsAccount getSavingsAccount() {
+        return savingsAccount;
     }
 
+    public CheckingAccount getCheckingAccount() {
+        return checkingAccount;
+    }
+
+    public void openCheckingAccount() {
+        if (this.checkingAccount != null) {
+            throw new IllegalStateException("User already has a checking account.");
+        }
+        this.checkingAccount = new CheckingAccount(this);
+    }
 }
