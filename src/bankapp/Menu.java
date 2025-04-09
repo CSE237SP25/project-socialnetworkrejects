@@ -37,52 +37,45 @@ public class Menu {
             } else {
                 System.out.println("The selection is invalid.");
             }
-        } 
-        else {
-        	//Logged in
+        } else {
+            // Logged in
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 // Admin
-            	if (menuChoice.equalsIgnoreCase("view all transactions")) {
-            	    viewAllTransactions();
-            	} else if (menuChoice.equalsIgnoreCase("logout")) {
-            	    logout();
-            	} else {
-            	    System.out.println("Invalid");
-            	}
-            } 
-            else {
+                if (menuChoice.equalsIgnoreCase("view all transactions")) {
+                    viewAllTransactions();
+                } else if (menuChoice.equalsIgnoreCase("logout")) {
+                    logout();
+                } else {
+                    System.out.println("Invalid");
+                }
+            } else {
                 if (menuChoice.equalsIgnoreCase("deposit")) {
                     depositMoney();
-                } 
-                else if (menuChoice.equalsIgnoreCase("withdraw")) {
+                } else if (menuChoice.equalsIgnoreCase("withdraw")) {
                     withdrawMoney();
-                }
-                else if (menuChoice.equalsIgnoreCase("history")) {
-                	viewTransactionHistory();
-                }
-                else if (menuChoice.equalsIgnoreCase("interest calculator")) {
+                } else if (menuChoice.equalsIgnoreCase("history")) {
+                    viewTransactionHistory();
+                } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
                     System.out.println("\nGiving a 1 year calculation of interest.");
                     System.out.print("Interest generated in 1 year: $");
                     calculateInterest(1); // Placeholder for interest calculation
-                } 
-                else if (menuChoice.equalsIgnoreCase("balance")) {
+                } else if (menuChoice.equalsIgnoreCase("balance")) {
                     checkBalance();
-                } 
-                else if (menuChoice.equalsIgnoreCase("logout")) {
+                } else if (menuChoice.equalsIgnoreCase("open checking account")) {
+                    openCheckingAccount();
+                } else if (menuChoice.equalsIgnoreCase("logout")) {
                     logout();
-                } 
-                else {
+                } else {
                     System.out.println("Invalid action");
                 }
             }
         }
     }
-
     /**
      * Main menu
      */
     public void displayMenuOptions() {
-        //user not logged in
+        // user not logged in
         if (currentUser == null) {
             System.out.println("[ Menu Options ]");
             System.out.println("> Register");
@@ -90,12 +83,12 @@ public class Menu {
         } 
         // If a user is logged in
         else {
-        	if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-        	    System.out.println("\n" + "Welcome, admin user!");
-        	    System.out.println("[ Menu Options ]");
-        	    System.out.println("> View All Transactions");
-        	    System.out.println("> Logout");
-        	} else {
+            if (currentUser.getUsername().equalsIgnoreCase("admin")) {
+                System.out.println("\n" + "Welcome, admin user!");
+                System.out.println("[ Menu Options ]");
+                System.out.println("> View All Transactions");
+                System.out.println("> Logout");
+            } else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
                 System.out.println("> Deposit");
@@ -103,6 +96,7 @@ public class Menu {
                 System.out.println("> History");
                 System.out.println("> Interest Calculator");
                 System.out.println("> Balance");
+                System.out.println("> Open Checking Account");
                 System.out.println("> Logout");
             }
         }
@@ -193,7 +187,7 @@ public class Menu {
      */
     public void viewTransactionHistory() {
         System.out.println("Transaction History");
-        ArrayList<String> history = currentUser.getAccount().getTransactionHistory();
+        ArrayList<String> history = currentUser.getSavingsAccount().getTransactionHistory();
 
         if (history.isEmpty()) {
             System.out.println("No Transactions Made");
@@ -219,7 +213,7 @@ public class Menu {
             User user = users.get(username);
             System.out.println("\nUser: " + username);
 
-            ArrayList<String> history = user.getAccount().getTransactionHistory();
+            ArrayList<String> history = user.getSavingsAccount().getTransactionHistory();
             if (history.isEmpty()) {
                 System.out.println(" No Transactions");
             } else {
@@ -247,16 +241,32 @@ public class Menu {
      * Deposit
      */
     public void depositMoney() {
-    	System.out.print("\n");
+        System.out.println("\nChoose an account to deposit into:");
+        System.out.println("1. Savings Account");
+        if (currentUser.getCheckingAccount() != null) {
+            System.out.println("2. Checking Account");
+        } else {
+            System.out.println("2. Checking Account (Not Opened)");
+        }
+
+        int accountChoice = scanner.nextInt();
+        scanner.nextLine(); // consume newline character
+
         System.out.println("Enter amount to deposit: ");
         double amount = scanner.nextDouble();
-        scanner.nextLine(); // consume leftover newline
+        scanner.nextLine(); // consume newline character
+
         try {
-            currentUser.getAccount().deposit(amount);
-            System.out.print("\n");
-            System.out.println("Deposit successful.");
+            if (accountChoice == 1) {
+                currentUser.getSavingsAccount().deposit(amount);
+                System.out.println("\nDeposit successful to Savings Account.");
+            } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
+                currentUser.getCheckingAccount().deposit(amount);
+                System.out.println("\nDeposit successful to Checking Account.");
+            } else {
+                System.out.println("Invalid account choice or Checking Account not opened.");
+            }
         } catch (IllegalArgumentException e) {
-        	System.out.print("\n");
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -265,16 +275,32 @@ public class Menu {
      * Withdraw
      */
     public void withdrawMoney() {
-    	System.out.print("\n");
+        System.out.println("\nChoose an account to withdraw from:");
+        System.out.println("1. Savings Account");
+        if (currentUser.getCheckingAccount() != null) {
+            System.out.println("2. Checking Account");
+        } else {
+            System.out.println("2. Checking Account (Not Opened)");
+        }
+
+        int accountChoice = scanner.nextInt();
+        scanner.nextLine(); // consume newline character
+
         System.out.println("Enter amount to withdraw: ");
         double amount = scanner.nextDouble();
-        scanner.nextLine(); // consume leftover newline
+        scanner.nextLine(); // consume newline character
+
         try {
-            currentUser.getAccount().withdraw(amount);
-            System.out.print("\n");
-            System.out.println("Withdrawal completed!");
+            if (accountChoice == 1) {
+                currentUser.getSavingsAccount().withdraw(amount);
+                System.out.println("\nWithdrawal successful from Savings Account.");
+            } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
+                currentUser.getCheckingAccount().withdraw(amount);
+                System.out.println("\nWithdrawal successful from Checking Account.");
+            } else {
+                System.out.println("Invalid account choice or Checking Account not opened.");
+            }
         } catch (IllegalArgumentException e) {
-        	System.out.print("\n");
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -283,9 +309,16 @@ public class Menu {
      *User balance
      */
     public void checkBalance() {
-    	System.out.print("\n");
-    	double unformattedDouble = currentUser.getAccount().getCurrentBalance();
-        System.out.println("Current balance: $" + String.format("%.2f", unformattedDouble));
+        System.out.print("\n");
+        double savingsBalance = currentUser.getSavingsAccount().getCurrentBalance();
+        System.out.println("Savings Account Balance: $" + String.format("%.2f", savingsBalance));
+        
+        if (currentUser.getCheckingAccount() != null) {
+            double checkingBalance = currentUser.getCheckingAccount().getCurrentBalance();
+            System.out.println("Checking Account Balance: $" + String.format("%.2f", checkingBalance));
+        } else {
+            System.out.println("Checking Account: Not opened yet.");
+        }
     }
 
     public String promptUsername() {
@@ -331,10 +364,11 @@ public class Menu {
             return !(lowerInput.equals("register") || lowerInput.equals("login"));
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                return !lowerInput.equals("logout");
+                return !lowerInput.equals("logout") && !lowerInput.equals("view all transactions");
             } else {
-                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || lowerInput.equals("interest calculator") ||
-                         lowerInput.equals("balance") || lowerInput.equals("logout"));
+                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || 
+                         lowerInput.equals("interest calculator") || lowerInput.equals("balance") || 
+                         lowerInput.equals("open checking account") || lowerInput.equals("logout"));
             }
         }
     }
@@ -368,15 +402,26 @@ public class Menu {
         currentUser = newUser;
     }
     public void deposit(double amount) {
-        currentUser.getAccount().deposit(amount);
+        currentUser.getSavingsAccount().deposit(amount);
     }
     public void withdraw(double amount) {
-        currentUser.getAccount().withdraw(amount);
+        currentUser.getSavingsAccount().withdraw(amount);
     }
     public void calculateInterest(double years) {
-        System.out.println(currentUser.getAccount().calculateInterest(years));
+        System.out.println(currentUser.getSavingsAccount().calculateInterest(years));
     }
     public double getCurrentBalance() {
-        return currentUser.getAccount().getCurrentBalance();
+        return currentUser.getSavingsAccount().getCurrentBalance();
+    }
+    public void openCheckingAccount() {
+        if (currentUser.getCheckingAccount() != null) {
+            System.out.println("\nYou already have a checking account.");
+        } else {
+            currentUser.openCheckingAccount();
+            System.out.println("\nChecking account opened successfully!");
+        }
+    }
+    public User getCurrentUser() {
+        return currentUser;
     }
 }

@@ -7,108 +7,98 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import bankapp.BankAccount;
+import bankapp.SavingsAccount;
+import bankapp.CheckingAccount;
 import bankapp.User;
 
 public class BankAccountTests {
 
-	private BankAccount account;
-	private User user;
+    private SavingsAccount savingsAccount;
+    private User user;
 
-	private BankAccount otherAccount;
-	private User otherUser;
+    private CheckingAccount checkingAccount;
+    private User otherUser;
 
     @Before
     public void setUp() {
-		this.user = new User("testUser", "testPassword");
-        this.account = new BankAccount(user);
-
-		this.otherUser = new User("otherUser", "otherPassword");
-		this.otherAccount = new BankAccount(otherUser);
+        this.user = new User("testUser", "testPassword");
+        this.savingsAccount = new SavingsAccount(user);
+        
+        this.otherUser = new User("otherUser", "otherPassword");
+        this.checkingAccount = new CheckingAccount(otherUser);
     }
 
-	@Test
-	public void testSimpleDeposit() {
-		//Call the method being tested
-		account.deposit(25);
-		
-		//Use assertions to verify results
-		assertEquals(account.getCurrentBalance(), 25.0, 0.005);
-	}
-	
-	@Test
-	public void testNegativeDeposit() {
-		try {
-			account.deposit(-25);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertTrue(e != null);
-		}
-	}
+    @Test
+    public void testSimpleDeposit() {
+        savingsAccount.deposit(25);
+        assertEquals(25.0, savingsAccount.getCurrentBalance(), 0.005);
+    }
 
-	public void testSimpleWithdraw() {
-		// test values
-		account.deposit(100);
-		account.withdraw(25);
-		assertEquals(75.00, account.getCurrentBalance(), 0.005);
-	}
-
-	@Test
-	public void testWithdrawWithInsufficientFunds() {
-		account.deposit(50);
-		try {
-			account.withdraw(200);
-			fail("Expected an IllegalArgumentException, because a withdraw was tried with insufficient funds.");
-		} catch (IllegalArgumentException e) {
-			assertTrue(e != null);
-		}
-	}
-
-	@Test
-	public void testWithdrawWithNegativeFunds() {
-        account.deposit(50);
+    @Test
+    public void testNegativeDeposit() {
         try {
-            account.withdraw(-50);
-            fail("Expected an IllegalArgumentException, because a withdraw was tried with negative funds.");
+            savingsAccount.deposit(-25);
+            fail("Expected IllegalArgumentException due to negative deposit.");
         } catch (IllegalArgumentException e) {
             assertTrue(e != null);
         }
-	}
-    
-    @Test
-    public void testSimpleTransfer() {
-    	account.deposit(50);
-    	account.transfer(25.0, otherAccount);
-    	assertEquals(25.0,otherAccount.getCurrentBalance(),0.005);
-    	
     }
 
-	@Test
-    public void testTransferWithInsufficientFunds() {
-    	this.account.deposit(50);
-    	
-    	try {
-    		account.transfer(200, otherAccount);
-    		fail("Expected an IllegalArgumentException, because a transfer was tried with insufficient funds.");
-    	}
-    	catch (IllegalArgumentException e) {
-    		assertTrue(e != null);
-    	}
-    	
+    @Test
+    public void testSimpleWithdraw() {
+        savingsAccount.deposit(100);
+        savingsAccount.withdraw(25);
+        assertEquals(75.00, savingsAccount.getCurrentBalance(), 0.005);
     }
-    
+
+    @Test
+    public void testWithdrawWithInsufficientFunds() {
+        savingsAccount.deposit(50);
+        try {
+            savingsAccount.withdraw(200);
+            fail("Expected an IllegalArgumentException, because a withdrawal was tried with insufficient funds.");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e != null);
+        }
+    }
+
+    @Test
+    public void testWithdrawWithNegativeFunds() {
+        savingsAccount.deposit(50);
+        try {
+            savingsAccount.withdraw(-50);
+            fail("Expected an IllegalArgumentException, because a withdrawal was tried with negative funds.");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e != null);
+        }
+    }
+
+    @Test
+    public void testSimpleTransfer() {
+        savingsAccount.deposit(50);
+        savingsAccount.transfer(25.0, checkingAccount);
+        assertEquals(25.0, checkingAccount.getCurrentBalance(), 0.005);
+    }
+
+    @Test
+    public void testTransferWithInsufficientFunds() {
+        savingsAccount.deposit(50);
+        try {
+            savingsAccount.transfer(200, checkingAccount);
+            fail("Expected an IllegalArgumentException, because a transfer was tried with insufficient funds.");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e != null);
+        }
+    }
+
     @Test
     public void testTransferWithNegativeFunds() {
-    	this.account.deposit(50);
-    	
-    	try {
-    		account.transfer(-25.0, otherAccount);
-    		fail("Expected an IllegalArgumentException, because a transfer was tried with negative funds.");
-    	}
-    	catch (IllegalArgumentException e) {
-    		assertTrue(e != null);
-    	}
-    	
+        savingsAccount.deposit(50);
+        try {
+            savingsAccount.transfer(-25.0, checkingAccount);
+            fail("Expected an IllegalArgumentException, because a transfer was tried with negative funds.");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e != null);
+        }
     }
-    
 }
