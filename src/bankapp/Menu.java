@@ -8,17 +8,19 @@ public class Menu {
     private Scanner scanner;
     private HashMap<String, User> users;
     private User currentUser;
+    private MenuDisplayHelper menuDisplayHelper;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
         this.users = new HashMap<>();
         this.currentUser = null;
+        this.menuDisplayHelper = new MenuDisplayHelper();
     }
 
     public void runStartingConfiguration() {
-        displayWelcomeMessage();
+        this.menuDisplayHelper.displayWelcomeMessage();
         while (true) {
-            displayMenuOptions();
+            this.menuDisplayHelper.displayMenuOptions(this.currentUser);
             String menuChoice = handleUserMenuInput();
             handleUserMenuSelection(menuChoice);
         }
@@ -29,14 +31,7 @@ public class Menu {
      */
     public void handleUserMenuSelection(String menuChoice) {
         if (currentUser == null) {
-            // No one is logged in -> REGISTER or LOGIN.
-            if (menuChoice.equalsIgnoreCase("register")) {
-                registerUser();
-            } else if (menuChoice.equalsIgnoreCase("login")) {
-                userLogin();
-            } else {
-                System.out.println("The selection is invalid.");
-            }
+            handleUnloggedUserMenuSelection(menuChoice);
         } else {
             // Logged in
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
@@ -71,51 +66,23 @@ public class Menu {
             }
         }
     }
-    /**
-     * Main menu
-     */
-    public void displayMenuOptions() {
-        // user not logged in
-        if (currentUser == null) {
-            System.out.println("[ Menu Options ]");
-            System.out.println("> Register");
-            System.out.println("> Login");
-        } 
-        // If a user is logged in
-        else {
-            if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                System.out.println("\n" + "Welcome, admin user!");
-                System.out.println("[ Menu Options ]");
-                System.out.println("> View All Transactions");
-                System.out.println("> Logout");
-            } else {
-                System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
-                System.out.println("[ Menu Options ]");
-                System.out.println("> Deposit");
-                System.out.println("> Withdraw");
-                System.out.println("> History");
-                System.out.println("> Interest Calculator");
-                System.out.println("> Balance");
-                System.out.println("> Open Checking Account");
-                System.out.println("> Logout");
-            }
-        }
-    }
 
-    /**
-     * Welcome message
-     */
-    public void displayWelcomeMessage() {
-    	System.out.print("\n");
-        System.out.println("Welcome to the Bank Social Network.");
-        System.out.print("\n");
+    public void handleUnloggedUserMenuSelection(String menuChoice) {
+        // No one is logged in -> REGISTER or LOGIN.
+        if (menuChoice.equalsIgnoreCase("register")) {
+            registerUser();
+        } else if (menuChoice.equalsIgnoreCase("login")) {
+            userLogin();
+        } else {
+            System.out.println("The selection is invalid.");
+        }
     }
 
     /**
      * Creates a new user
      */
     public void registerUser() {
-        displayRegisterOptions();
+        this.menuDisplayHelper.displayRegisterOptions();
         if (checkYes(handleUserBooleanInput())) {
             String username = promptUsername();
             if (users.containsKey(username)) {
@@ -145,7 +112,7 @@ public class Menu {
      * Admin & normal
      */
     public void userLogin() {
-        displayLoginOptions();
+        this.menuDisplayHelper.displayLoginOptions();
         if (checkYes(handleUserBooleanInput())) {
             String username = promptUsername();
             String password = promptPassword();
@@ -331,22 +298,6 @@ public class Menu {
     	System.out.print("\n");
         System.out.println("Enter Password: ");
         return scanner.nextLine();
-    }
-
-    public void displayLoginOptions() {
-    	System.out.print("\n");
-        System.out.println("Are you sure you want to login?");
-        System.out.print("\n");
-        System.out.println("> Yes");
-        System.out.println("> No");
-    }
-
-    public void displayRegisterOptions() {
-    	System.out.print("\n");
-        System.out.println("Are you sure you want to register?");
-        System.out.print("\n");
-        System.out.println("> Yes");
-        System.out.println("> No");
     }
 
     public String handleUserMenuInput() {
