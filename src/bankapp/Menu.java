@@ -21,11 +21,16 @@ public class Menu {
 
     public void runStartingConfiguration() {
         this.menuDisplayHelper.displayWelcomeMessage();
+        handleMenuLoop();
+    }
+
+    public void handleMenuLoop() {
         while (true) {
             this.menuDisplayHelper.displayMenuOptions(this.currentUser);
             String menuChoice = this.menuInputHelper.handleUserMenuInput(scanner, currentUser);
             handleUserMenuSelection(menuChoice);
         }
+
     }
 
     /**
