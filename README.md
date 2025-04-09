@@ -25,15 +25,16 @@ Iteration 1:
 
 Iteration 2:
 
-[A user should not be able to make fraudulent transactions and should be notified if they have potentially made one](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/12)
-[A user should be able to calculate the amount of interest on the funds within their savings account](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/14)
-[A user should be able to view their own transaction history](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/16)
-[The admin user should be able to view a transaction history of ALL transactions made by Users](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/13)
-[A user should be able to open a savings account (the one that is opened on registration)](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/1)
-[A user should be able to open a checkings account](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/2)
-[A user should be able to transfer money to another (arbitrary) user (mainly the frontend implementation)](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/30)
-[All users' transactions should be assigned a unique ID (UUID) and added to their transaction history](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/15)
-Not specifically tailored to a user story, but 4 additional issues (#32, #33, #34, #35) were made and subsequently assigned to handle project feedback.
+[A user should not be able to make fraudulent transactions and should be notified if they have potentially made one](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/12) 
+[A user should be able to calculate the amount of interest on the funds within their savings account](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/14) 
+[A user should be able to view their own transaction history](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/16) 
+[The admin user should be able to view a transaction history of ALL transactions made by Users](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/13) 
+[A user should be able to open a savings account (the one that is opened on registration)](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/1) 
+[A user should be able to open a checkings account](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/2) 
+[A user should be able to transfer money to another (arbitrary) user (mainly the frontend implementation)](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/30) 
+[All users' transactions should be assigned a unique ID (UUID) and added to their transaction history](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/15) 
+
+Not specifically tailored to a user story, but 4 additional issues (#32, #33, #34, #35) were made and subsequently assigned to handle project feedback. 
 
 
 
