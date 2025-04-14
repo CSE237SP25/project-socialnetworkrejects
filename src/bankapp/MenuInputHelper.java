@@ -16,14 +16,13 @@ public class MenuInputHelper {
     public boolean checkIncorrectUserMenuInput(String input, User currentUser) {
         String lowerInput = input.toLowerCase();
         if (currentUser == null) {
-            return !(lowerInput.equals("register") || lowerInput.equals("login"));
+            return !(lowerInput.equals("register") || lowerInput.equals("a") ||lowerInput.equals("login") || lowerInput.equals("b"));
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                return !lowerInput.equals("logout") && !lowerInput.equals("view all transactions");
+                return !lowerInput.equals("logout");
             } else {
-                return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || 
-                         lowerInput.equals("interest calculator") || lowerInput.equals("balance") || 
-                         lowerInput.equals("open checking account") || lowerInput.equals("logout"));
+                return !(lowerInput.equals("1") || lowerInput.equals("2") || lowerInput.equals("3") ||
+                        lowerInput.equals("4") || lowerInput.equals("5") || lowerInput.equals("6") || lowerInput.equals("7"));
             }
         }
     }

@@ -45,26 +45,26 @@ public class MenuDisplayHelper {
         // user not logged in
         if (currentUser == null) {
             System.out.println("[ Menu Options ]");
-            System.out.println("> Register");
-            System.out.println("> Login");
+            System.out.println("> A. Register");
+            System.out.println("> B. Login");
         } 
         // If a user is logged in
         else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
-                System.out.println("> View All Transactions");
-                System.out.println("> Logout");
+                System.out.println("> 1. View All Transactions");
+                System.out.println("> 2. Logout");
             } else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
-                System.out.println("> Deposit");
-                System.out.println("> Withdraw");
-                System.out.println("> History");
-                System.out.println("> Interest Calculator");
-                System.out.println("> Balance");
-                System.out.println("> Open Checking Account");
-                System.out.println("> Logout");
+                System.out.println("> 1. Deposit");
+                System.out.println("> 2. Withdraw");
+                System.out.println("> 3. History");
+                System.out.println("> 4. Interest Calculator");
+                System.out.println("> 5. Check Balance");
+                System.out.println("> 6. Open Checking Account");
+                System.out.println("> 7. Logout");
             }
         }
     }

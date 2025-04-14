@@ -54,11 +54,11 @@ public class Menu {
     }
 
     public void handleUnloggedUserMenuSelection(String menuChoice) {
-        if (menuChoice.equalsIgnoreCase("register")) {
+        if (menuChoice.equalsIgnoreCase("A. register") || menuChoice.equalsIgnoreCase("A") || menuChoice.equalsIgnoreCase("Register")) {
             registerUser();
         } 
 
-        else if (menuChoice.equalsIgnoreCase("login")) {
+        else if (menuChoice.equalsIgnoreCase("B. login") || menuChoice.equalsIgnoreCase("B") || menuChoice.equalsIgnoreCase("login")) {
             userLogin();
         } 
 
@@ -83,21 +83,21 @@ public class Menu {
 
     //This method may be big, but it is necessary for the menu to work.
     public void handleLoggedUserMenuSelection(String menuChoice) {
-        if (menuChoice.equalsIgnoreCase("deposit")) {
+        if (menuChoice.equalsIgnoreCase("deposit") ||menuChoice.equalsIgnoreCase("1") || menuChoice.equalsIgnoreCase("1. deposit")) {
             depositMoney();
-        } else if (menuChoice.equalsIgnoreCase("withdraw")) {
+        } else if (menuChoice.equalsIgnoreCase("withdraw") ||menuChoice.equalsIgnoreCase("2") || menuChoice.equalsIgnoreCase("2. withdraw")) {
             withdrawMoney();
-        } else if (menuChoice.equalsIgnoreCase("history")) {
+        } else if (menuChoice.equalsIgnoreCase("history") || menuChoice.equalsIgnoreCase("3") || menuChoice.equalsIgnoreCase("3. history")) {
             viewTransactionHistory();
-        } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
+        } else if (menuChoice.equalsIgnoreCase("interest calculator") || menuChoice.equalsIgnoreCase("4") || menuChoice.equalsIgnoreCase("4. Interest calculator")) {
             System.out.println("\nGiving a 1 year calculation of interest.");
             System.out.print("Interest generated in 1 year: $");
             calculateInterest(1); // Placeholder for interest calculation
-        } else if (menuChoice.equalsIgnoreCase("balance")) {
+        } else if (menuChoice.equalsIgnoreCase("balance") || menuChoice.equalsIgnoreCase("5") || menuChoice.equalsIgnoreCase("5. Balance")) {
             checkBalance();
-        } else if (menuChoice.equalsIgnoreCase("open checking account")) {
+        } else if (menuChoice.equalsIgnoreCase("open checking account") || menuChoice.equalsIgnoreCase("6") || menuChoice.equalsIgnoreCase("6. Open checking account ")) {
             openCheckingAccount();
-        } else if (menuChoice.equalsIgnoreCase("logout")) {
+        } else if (menuChoice.equalsIgnoreCase("logout") || menuChoice.equalsIgnoreCase("7") || menuChoice.equalsIgnoreCase("7. logout")) {
             logout();
         } else {
             System.out.println("Invalid action");
