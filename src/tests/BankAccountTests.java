@@ -12,6 +12,7 @@ import bankapp.CheckingAccount;
 import bankapp.User;
 
 public class BankAccountTests {
+	//testing
 
     private SavingsAccount savingsAccount;
     private User user;
