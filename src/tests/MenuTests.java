@@ -1,5 +1,4 @@
 package tests;
-
 import bankapp.Menu;
 import bankapp.MenuInputHelper;
 import bankapp.User;
