@@ -57,6 +57,8 @@ public class MenuDisplayHelper {
             System.out.println("[ Menu Options ]");
             System.out.println("> Register");
             System.out.println("> Login");
+            System.out.println("> Exit Program");
+
         } 
         // If a user is logged in
         else {
@@ -65,6 +67,7 @@ public class MenuDisplayHelper {
                 System.out.println("[ Menu Options ]");
                 System.out.println("> View All Transactions");
                 System.out.println("> Logout");
+                System.out.println("> Exit Program");
             } else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
@@ -76,6 +79,7 @@ public class MenuDisplayHelper {
                 System.out.println("> Balance");
                 System.out.println("> Open Checking Account");
                 System.out.println("> Logout");
+                System.out.println("> Exit Program");
             }
         }
     }
