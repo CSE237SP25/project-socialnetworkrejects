@@ -36,6 +36,12 @@ public class Menu {
      * Admin vs nonadmin
      */
     public void handleUserMenuSelection(String menuChoice) {
+    	//exits the program
+    	if (menuChoice.equalsIgnoreCase("exit program")) {
+    	    System.out.println("Exiting the program.");
+    	    System.exit(0);
+    	}
+
         // No one is logged in -> REGISTER or LOGIN.
         if (currentUser == null) {
             handleUnloggedUserMenuSelection(menuChoice);
@@ -88,7 +94,7 @@ public class Menu {
         } else if (menuChoice.equalsIgnoreCase("withdraw")) {
             withdrawMoney();
         } else if (menuChoice.equalsIgnoreCase("transfer")) {
-            System.out.println("\nTransferring money to another arbitrary savings account.");
+        	System.out.println("\nTransferring money to another user's savings account.");
             transferMoney();
         } else if (menuChoice.equalsIgnoreCase("history")) {
             viewTransactionHistory();
@@ -151,8 +157,12 @@ public class Menu {
             }
             //If not admin 
             else {
-                // Normal user
-                if (!users.containsKey(username)) {
+                // Normal user already exists
+                if (users.containsKey(username)) {
+                    validateAndLoginUser(username, password);
+                }
+                // Normal user does not exist
+                else if (!users.containsKey(username)) {
                     handleNormalUserPassword(username, password);
                 }
             }
@@ -173,11 +183,7 @@ public class Menu {
     }
 
     public void handleNormalUserPassword(String username, String password) {
-        if (!users.containsKey(username)) {
-            System.out.println("User not found. Try again.");
-            return;
-        }
-        validateAndLoginUser(username, password);
+        System.out.println("\n" + "User does not exist. In order to log in, you must first register. \n");
     }
 
     /**
@@ -276,7 +282,7 @@ public class Menu {
             System.out.println("\nDeposit successful to Checking Account.");
         } 
         else {
-            System.out.println("Invalid account choice or Checking Account not opened.");
+            System.out.println("\nInvalid account choice or Checking Account not opened.");
         }
     }
 
@@ -308,7 +314,7 @@ public class Menu {
             currentUser.getCheckingAccount().withdraw(amount);
             System.out.println("\nWithdrawal successful from Checking Account.");
         } else {
-            System.out.println("Invalid account choice or Checking Account not opened.");
+            System.out.println("\nInvalid account choice or Checking Account not opened.");
         }
     }
 
@@ -322,24 +328,39 @@ public class Menu {
         System.out.println("\nEnter amount to transfer: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
+        
+        System.out.println("\nEnter the username of the recipient:");
+        String recipientUsername = scanner.nextLine();
 
         try {
-            handleAccountTransferChoice(accountChoice, amount);
+        	handleAccountTransferChoice(accountChoice, amount, recipientUsername);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
 
     }
 
-    public void handleAccountTransferChoice(int accountChoice, double amount) {
+    public void handleAccountTransferChoice(int accountChoice, double amount, String recipientUsername) {
+    	User recipient = users.get(recipientUsername);
+
+    	if (recipient == null) {
+    	    System.out.println("\nThe recipient user does not exist in the system.");
+    	    return;
+    	}
+
+        if (recipientUsername.equals(currentUser.getUsername())) {
+            System.out.println("\nYou cannot transfer money to yourself.");
+            return;
+        }
+
         if (accountChoice == 1) {
-            currentUser.getSavingsAccount().transfer(amount, new SavingsAccount(new User("test", "passTest")));
-            System.out.println("\nTransfer successful from Savings Account to another arbitrary savings account.");
+        	currentUser.getSavingsAccount().transfer(amount, recipient.getSavingsAccount());
+        	System.out.println("\nTransfer successful from Savings Account to " + recipientUsername + "'s Savings Account.");
         } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
-            currentUser.getCheckingAccount().withdraw(amount);
-            System.out.println("\nWithdrawal successful from Checking Account to another arbitrary savings account.");
+            currentUser.getCheckingAccount().transfer(amount, recipient.getSavingsAccount());
+            System.out.println("\nWithdrawal successful from Checking Account to " + recipientUsername + "'s Savings Account");
         } else {
-            System.out.println("Invalid account choice or Checking Account not opened.");
+            System.out.println("\nInvalid account choice or Checking Account not opened.");
         }
 
     }
