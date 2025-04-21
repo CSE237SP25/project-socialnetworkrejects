@@ -282,7 +282,7 @@ public class Menu {
             System.out.println("\nDeposit successful to Checking Account.");
         } 
         else {
-            System.out.println("Invalid account choice or Checking Account not opened.");
+            System.out.println("\nInvalid account choice or Checking Account not opened.");
         }
     }
 
@@ -314,7 +314,7 @@ public class Menu {
             currentUser.getCheckingAccount().withdraw(amount);
             System.out.println("\nWithdrawal successful from Checking Account.");
         } else {
-            System.out.println("Invalid account choice or Checking Account not opened.");
+            System.out.println("\nInvalid account choice or Checking Account not opened.");
         }
     }
 
@@ -344,18 +344,23 @@ public class Menu {
     	User recipient = users.get(recipientUsername);
 
     	if (recipient == null) {
-    	    System.out.println("The recipient user does not exist in our system.");
+    	    System.out.println("\nThe recipient user does not exist in the system.");
     	    return;
     	}
+
+        if (recipientUsername.equals(currentUser.getUsername())) {
+            System.out.println("\nYou cannot transfer money to yourself.");
+            return;
+        }
 
         if (accountChoice == 1) {
         	currentUser.getSavingsAccount().transfer(amount, recipient.getSavingsAccount());
         	System.out.println("\nTransfer successful from Savings Account to " + recipientUsername + "'s Savings Account.");
         } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
-            currentUser.getCheckingAccount().withdraw(amount);
-            System.out.println("\nWithdrawal successful from Checking Account to another arbitrary savings account.");
+            currentUser.getCheckingAccount().transfer(amount, recipient.getSavingsAccount());
+            System.out.println("\nWithdrawal successful from Checking Account to " + recipientUsername + "'s Savings Account");
         } else {
-            System.out.println("Invalid account choice or Checking Account not opened.");
+            System.out.println("\nInvalid account choice or Checking Account not opened.");
         }
 
     }
