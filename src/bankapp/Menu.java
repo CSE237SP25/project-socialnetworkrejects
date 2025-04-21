@@ -157,8 +157,12 @@ public class Menu {
             }
             //If not admin 
             else {
-                // Normal user
-                if (!users.containsKey(username)) {
+                // Normal user already exists
+                if (users.containsKey(username)) {
+                    validateAndLoginUser(username, password);
+                }
+                // Normal user does not exist
+                else if (!users.containsKey(username)) {
                     handleNormalUserPassword(username, password);
                 }
             }
@@ -179,11 +183,7 @@ public class Menu {
     }
 
     public void handleNormalUserPassword(String username, String password) {
-        if (!users.containsKey(username)) {
-            System.out.println("User not found. Try again.");
-            return;
-        }
-        validateAndLoginUser(username, password);
+        System.out.println("\n" + "User does not exist. In order to log in, you must first register. \n");
     }
 
     /**
