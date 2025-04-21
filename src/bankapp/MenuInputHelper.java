@@ -7,7 +7,7 @@ public class MenuInputHelper {
     public String handleUserMenuInput(Scanner scanner, User currentUser) {
         String input = scanner.nextLine().toLowerCase();
         while (checkIncorrectUserMenuInput(input, currentUser)) {
-            System.out.println("Please enter a correct menu selection.");
+            System.out.println("\nPlease enter a correct menu selection.");
             input = scanner.nextLine().toLowerCase();
         }
         return input;
@@ -31,7 +31,7 @@ public class MenuInputHelper {
     public String handleUserBooleanInput(Scanner scanner) {
         String input = scanner.nextLine().toLowerCase();
         while (checkIncorrectUserBooleanInput(input)) {
-            System.out.println("Please enter a correct menu selection");
+            System.out.println("\nPlease enter a correct menu selection.");
             input = scanner.nextLine().toLowerCase();
         }
         return input;

@@ -40,7 +40,7 @@ public abstract class AbstractBankAccount {
 
     public void transfer(double amount, AbstractBankAccount otherAccount) {
         if (amount < 0 || amount > this.balance) {
-            throw new IllegalArgumentException("Transfer amount invalid.");
+            throw new IllegalArgumentException("\nTransfer amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
             throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
