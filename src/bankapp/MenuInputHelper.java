@@ -17,7 +17,8 @@ public class MenuInputHelper {
         String lowerInput = input.toLowerCase();
 
         if (currentUser == null) {
-            return !(lowerInput.equals("register") || lowerInput.equals("login") || lowerInput.equals("exit program"));
+            return !(lowerInput.equals("register") || lowerInput.equals("login") || lowerInput.equals("exit program") ||
+                    lowerInput.equals("1") || lowerInput.equals("2") || lowerInput.equals("3") );
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 return !(lowerInput.equals("logout") || lowerInput.equals("view all transactions") || lowerInput.equals("exit program"));

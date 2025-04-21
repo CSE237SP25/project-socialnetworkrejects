@@ -37,10 +37,18 @@ public class Menu {
      */
     public void handleUserMenuSelection(String menuChoice) {
     	//exits the program
-    	if (menuChoice.equalsIgnoreCase("exit program") ||menuChoice.equalsIgnoreCase("3") ) {
+        // if user is not logged in then 3 --> exits else 9 exits
+    	if (currentUser == null && (menuChoice.equalsIgnoreCase("exit program") ||
+                menuChoice.equalsIgnoreCase("3"))){
     	    System.out.println("Exiting the program.");
     	    System.exit(0);
-    	}
+        }
+
+        if (currentUser != null && (menuChoice.equalsIgnoreCase("exit program") ||
+                menuChoice.equalsIgnoreCase("9"))){
+            System.out.println("Exiting the program.");
+            System.exit(0);
+        }
 
         // No one is logged in -> REGISTER or LOGIN.
         if (currentUser == null) {
@@ -261,17 +269,20 @@ public class Menu {
         this.menuDisplayHelper.displayDepositOptions(currentUser);
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
-
-        System.out.println("\nEnter amount to deposit: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine(); // consume newline character
-
-        try {
-            handleAccountDepositChoice(accountChoice, amount);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
+        if (accountChoice == 1 || accountChoice == 2) {
+            System.out.println("\nEnter amount to deposit: ");
+            double amount = scanner.nextDouble();
+            scanner.nextLine(); // consume newline character
+            try {
+                handleAccountDepositChoice(accountChoice, amount);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Invalid choice. Please select 1 or 2.");
         }
     }
+
 
     public void handleAccountDepositChoice(int accountChoice, double amount) {
         if (accountChoice == 1) {
@@ -296,16 +307,20 @@ public class Menu {
         int accountChoice = scanner.nextInt();
         scanner.nextLine(); // consume newline character
 
-        System.out.println("\nEnter amount to withdraw: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine(); // consume newline character
-
-        try {
-            handleAccountWithdrawChoice(accountChoice, amount);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
+        if (accountChoice == 1 || accountChoice == 2) {
+            System.out.println("\nEnter amount to withdraw: ");
+            double amount = scanner.nextDouble();
+            scanner.nextLine();
+            try {
+                handleAccountWithdrawChoice(accountChoice, amount);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Invalid choice. Please select 1 or 2.");
         }
     }
+
 
     public void handleAccountWithdrawChoice(int accountChoice, double amount) {
         if (accountChoice == 1) {
