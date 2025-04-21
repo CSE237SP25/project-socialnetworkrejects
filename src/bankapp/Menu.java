@@ -37,7 +37,7 @@ public class Menu {
      */
     public void handleUserMenuSelection(String menuChoice) {
     	//exits the program
-    	if (menuChoice.equalsIgnoreCase("exit program")) {
+    	if (menuChoice.equalsIgnoreCase("exit program") ||menuChoice.equalsIgnoreCase("3") ) {
     	    System.out.println("Exiting the program.");
     	    System.exit(0);
     	}
@@ -60,11 +60,11 @@ public class Menu {
     }
 
     public void handleUnloggedUserMenuSelection(String menuChoice) {
-        if (menuChoice.equalsIgnoreCase("register")) {
+        if (menuChoice.equalsIgnoreCase("register") || menuChoice.equalsIgnoreCase("1")) {
             registerUser();
         } 
 
-        else if (menuChoice.equalsIgnoreCase("login")) {
+        else if (menuChoice.equalsIgnoreCase("login") || menuChoice.equalsIgnoreCase("2")) {
             userLogin();
         } 
 
@@ -87,31 +87,32 @@ public class Menu {
         }
     }
 
-    //This method may be big, but it is necessary for the menu to work.
+
     public void handleLoggedUserMenuSelection(String menuChoice) {
-        if (menuChoice.equalsIgnoreCase("deposit")) {
+        if (menuChoice.equalsIgnoreCase("deposit") || menuChoice.equalsIgnoreCase("1") ) {
             depositMoney();
-        } else if (menuChoice.equalsIgnoreCase("withdraw")) {
+        } else if (menuChoice.equalsIgnoreCase("withdraw") || menuChoice.equalsIgnoreCase("2")) {
             withdrawMoney();
-        } else if (menuChoice.equalsIgnoreCase("transfer")) {
-        	System.out.println("\nTransferring money to another user's savings account.");
+        } else if (menuChoice.equalsIgnoreCase("transfer") || menuChoice.equalsIgnoreCase("3")) {
+            System.out.println("\nTransferring money to another arbitrary savings account.");
             transferMoney();
-        } else if (menuChoice.equalsIgnoreCase("history")) {
+        } else if (menuChoice.equalsIgnoreCase("history") || menuChoice.equalsIgnoreCase("4")) {
             viewTransactionHistory();
-        } else if (menuChoice.equalsIgnoreCase("interest calculator")) {
+        } else if (menuChoice.equalsIgnoreCase("interest calculator") || menuChoice.equalsIgnoreCase("5")) {
             System.out.println("\nGiving a 1 year calculation of potential interest on money within savings account.");
             System.out.print("Potential interest if money was left for 1 year within savings account: $");
             calculateInterest(1); // Placeholder for interest calculation
-        } else if (menuChoice.equalsIgnoreCase("balance")) {
+        } else if (menuChoice.equalsIgnoreCase("balance") || menuChoice.equalsIgnoreCase("6")) {
             checkBalance();
-        } else if (menuChoice.equalsIgnoreCase("open checking account")) {
+        } else if (menuChoice.equalsIgnoreCase("open checking account") || menuChoice.equalsIgnoreCase("7")) {
             openCheckingAccount();
-        } else if (menuChoice.equalsIgnoreCase("logout")) {
+        } else if (menuChoice.equalsIgnoreCase("logout") || menuChoice.equalsIgnoreCase("8")) {
             logout();
         } else {
             System.out.println("Invalid action");
         }
     }
+
 
     /**
      * Creates a new user
@@ -148,29 +149,29 @@ public class Menu {
      */
     public void userLogin() {
         this.menuDisplayHelper.displayLoginOptions();
-        if (menuInputHelper.checkYes(menuInputHelper.handleUserBooleanInput(scanner))) {
+        String input = menuInputHelper.handleUserBooleanInput(scanner).trim();
+
+        if (menuInputHelper.checkYes(input)) {
             String username = promptUsername();
             String password = promptPassword();
-            // If admin
+
             if (username.equalsIgnoreCase("admin")) {
                 handleAdminPassword(password);
-            }
-            //If not admin 
-            else {
-                // Normal user already exists
+            } else {
                 if (users.containsKey(username)) {
                     validateAndLoginUser(username, password);
-                }
-                // Normal user does not exist
-                else if (!users.containsKey(username)) {
-                    handleNormalUserPassword(username, password);
+                } else {
+                    handleNormalUserPassword(username, password); // New user scenario
                 }
             }
-        } 
-        else {
+        } else if (menuInputHelper.checkNo(input)) {
             runStartingConfiguration();
+        } else {
+            System.out.println("Invalid input. Please enter 'yes', 'no', '1', or '2'.");
+            userLogin(); // re-prompt
         }
     }
+
 
     public void handleAdminPassword(String password) {
         if (password.equals("xyz")) {
@@ -276,13 +277,13 @@ public class Menu {
         if (accountChoice == 1) {
             currentUser.getSavingsAccount().deposit(amount);
             System.out.println("\nDeposit successful to Savings Account.");
-        } 
+        }
         else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
             currentUser.getCheckingAccount().deposit(amount);
             System.out.println("\nDeposit successful to Checking Account.");
-        } 
+        }
         else {
-            System.out.println("\nInvalid account choice or Checking Account not opened.");
+            System.out.println("Invalid account choice or Checking Account not opened.");
         }
     }
 
@@ -328,25 +329,26 @@ public class Menu {
         System.out.println("\nEnter amount to transfer: ");
         double amount = scanner.nextDouble();
         scanner.nextLine(); // consume newline character
-        
+
         System.out.println("\nEnter the username of the recipient:");
         String recipientUsername = scanner.nextLine();
 
         try {
-        	handleAccountTransferChoice(accountChoice, amount, recipientUsername);
+            handleAccountTransferChoice(accountChoice, amount, recipientUsername);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
 
     }
 
-    public void handleAccountTransferChoice(int accountChoice, double amount, String recipientUsername) {
-    	User recipient = users.get(recipientUsername);
 
-    	if (recipient == null) {
-    	    System.out.println("\nThe recipient user does not exist in the system.");
-    	    return;
-    	}
+    public void handleAccountTransferChoice(int accountChoice, double amount, String recipientUsername) {
+        User recipient = users.get(recipientUsername);
+
+        if (recipient == null) {
+            System.out.println("\nThe recipient user does not exist in the system.");
+            return;
+        }
 
         if (recipientUsername.equals(currentUser.getUsername())) {
             System.out.println("\nYou cannot transfer money to yourself.");
@@ -354,8 +356,8 @@ public class Menu {
         }
 
         if (accountChoice == 1) {
-        	currentUser.getSavingsAccount().transfer(amount, recipient.getSavingsAccount());
-        	System.out.println("\nTransfer successful from Savings Account to " + recipientUsername + "'s Savings Account.");
+            currentUser.getSavingsAccount().transfer(amount, recipient.getSavingsAccount());
+            System.out.println("\nTransfer successful from Savings Account to " + recipientUsername + "'s Savings Account.");
         } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
             currentUser.getCheckingAccount().transfer(amount, recipient.getSavingsAccount());
             System.out.println("\nWithdrawal successful from Checking Account to " + recipientUsername + "'s Savings Account");
@@ -372,7 +374,7 @@ public class Menu {
         System.out.print("\n");
         double savingsBalance = currentUser.getSavingsAccount().getCurrentBalance();
         System.out.println("Savings Account Balance: $" + String.format("%.2f", savingsBalance));
-        
+
         if (currentUser.getCheckingAccount() != null) {
             double checkingBalance = currentUser.getCheckingAccount().getCurrentBalance();
             System.out.println("Checking Account Balance: $" + String.format("%.2f", checkingBalance));
