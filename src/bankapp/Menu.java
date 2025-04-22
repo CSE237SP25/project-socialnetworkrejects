@@ -266,22 +266,26 @@ public class Menu {
      * Deposit
      */
     public void depositMoney() {
-        this.menuDisplayHelper.displayDepositOptions(currentUser);
-        int accountChoice = scanner.nextInt();
-        scanner.nextLine(); // consume newline character
-        if (accountChoice == 1 || accountChoice == 2) {
-            System.out.println("\nEnter amount to deposit: ");
-            double amount = scanner.nextDouble();
-            scanner.nextLine(); // consume newline character
-            try {
-                handleAccountDepositChoice(accountChoice, amount);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+        while (true) {
+            this.menuDisplayHelper.displayDepositOptions(currentUser);
+            int accountChoice = scanner.nextInt();
+            scanner.nextLine();
+            if (accountChoice == 1 || accountChoice == 2) {
+                System.out.println("\nEnter amount to deposit: ");
+                double amount = scanner.nextDouble();
+                scanner.nextLine();
+                try {
+                    handleAccountDepositChoice(accountChoice, amount);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+            } else {
+                System.out.println("Invalid choice");
             }
-        } else {
-            System.out.println("Invalid choice. Please select 1 or 2.");
         }
     }
+
 
 
     public void handleAccountDepositChoice(int accountChoice, double amount) {
@@ -302,24 +306,26 @@ public class Menu {
      * Withdraw
      */
     public void withdrawMoney() {
-        this.menuDisplayHelper.displayWithdrawOptions(currentUser);
-
-        int accountChoice = scanner.nextInt();
-        scanner.nextLine(); // consume newline character
-
-        if (accountChoice == 1 || accountChoice == 2) {
-            System.out.println("\nEnter amount to withdraw: ");
-            double amount = scanner.nextDouble();
-            scanner.nextLine();
-            try {
-                handleAccountWithdrawChoice(accountChoice, amount);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+        while (true) {
+            this.menuDisplayHelper.displayWithdrawOptions(currentUser);
+            int accountChoice = scanner.nextInt();
+            scanner.nextLine(); // consume newline character
+            if (accountChoice == 1 || accountChoice == 2) {
+                System.out.println("\nEnter amount to withdraw: ");
+                double amount = scanner.nextDouble();
+                scanner.nextLine();
+                try {
+                    handleAccountWithdrawChoice(accountChoice, amount);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+            } else {
+                System.out.println("Invalid choice");
             }
-        } else {
-            System.out.println("Invalid choice. Please select 1 or 2.");
         }
     }
+
 
 
     public void handleAccountWithdrawChoice(int accountChoice, double amount) {
@@ -336,24 +342,35 @@ public class Menu {
 
     //IMPORTANT: only to an arbitrary user's savings account that already exists for now
     public void transferMoney() {
-        this.menuDisplayHelper.displayTransferOptions(currentUser);
-
-        int accountChoice = scanner.nextInt();
-        scanner.nextLine(); // consume newline character
-
-        System.out.println("\nEnter amount to transfer: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine(); // consume newline character
-
-        System.out.println("\nEnter the username of the recipient:");
-        String recipientUsername = scanner.nextLine();
-
-        try {
-            handleAccountTransferChoice(accountChoice, amount, recipientUsername);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
+        while (true) {
+            this.menuDisplayHelper.displayTransferOptions(currentUser);
+            int accountChoice = scanner.nextInt();
+            scanner.nextLine();
+            if (accountChoice == 1 || accountChoice == 2) {
+                System.out.println("\nEnter amount to transfer: ");
+                double amount = scanner.nextDouble();
+                scanner.nextLine();
+                System.out.println("\nEnter the username of the recipient:");
+                String recipientUsername = scanner.nextLine();
+                User recipient = users.get(recipientUsername);
+                if (recipient == null) {
+                    System.out.println("\nThe recipient user does not exist in the system.");
+                    continue;
+                }
+                if (recipientUsername.equals(currentUser.getUsername())) {
+                    System.out.println("\nYou cannot transfer money to yourself.");
+                    continue;
+                }
+                try {
+                    handleAccountTransferChoice(accountChoice, amount, recipientUsername);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+            } else {
+                System.out.println("Invalid choice. Please select 1 or 2.");
+            }
         }
-
     }
 
 
