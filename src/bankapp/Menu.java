@@ -97,7 +97,11 @@ public class Menu {
         }
         else if (menuChoice.equalsIgnoreCase("logout") || menuChoice.equalsIgnoreCase("3")) {
             logout();
-        } 
+        }
+        else if (menuChoice.equalsIgnoreCase("exit program") || menuChoice.equalsIgnoreCase("4")) {
+            System.out.println("\nExiting the program.");
+            System.exit(0);
+        }
         else {
             System.out.println("\nInvalid action.");
         }
@@ -109,7 +113,7 @@ public class Menu {
         } else if (menuChoice.equalsIgnoreCase("withdraw") || menuChoice.equalsIgnoreCase("2")) {
             withdrawMoney();
         } else if (menuChoice.equalsIgnoreCase("transfer") || menuChoice.equalsIgnoreCase("3")) {
-            System.out.println("\nTransferring money to another arbitrary savings account.");
+            System.out.println("\nTransferring money to another user's savings account.");
             transferMoney();
         } else if (menuChoice.equalsIgnoreCase("history") || menuChoice.equalsIgnoreCase("4")) {
             viewTransactionHistory();
@@ -221,7 +225,7 @@ public class Menu {
             currentUser = user;
             System.out.println("\n" + "Logged in successfully as " + username + ".");
         } else {
-            System.out.println("\n" + "Incorrect password");
+            System.out.println("\n" + "Incorrect password.");
         }
     }
     /**
@@ -335,6 +339,12 @@ public class Menu {
     }
 
     public void transferMoney() {
+        if (users.size() < 2) {
+            System.out.println("\nThere are not enough users to transfer money to. At this time, another user must join the network.");
+            return;
+        }
+        
+
         this.menuDisplayHelper.displayTransferOptions(currentUser);
 
         int accountChoice = handleAccountChoiceOverall("Choose an account to transfer from:");
@@ -373,9 +383,17 @@ public class Menu {
             return;
         }
         if (accountChoice == 1) {
+            if (amount > currentUser.getSavingsAccount().getCurrentBalance()) {
+                System.out.println("\nInsufficient funds in Savings Account.");
+                return;
+            }
             currentUser.getSavingsAccount().transfer(amount, recipient.getSavingsAccount());
             System.out.println("\nTransfer successful from Savings Account to " + recipientUsername + "'s Savings Account.");
         } else if (accountChoice == 2 && currentUser.getCheckingAccount() != null) {
+            if (amount > currentUser.getSavingsAccount().getCurrentBalance()) {
+                System.out.println("\nInsufficient funds in savings Account.");
+                return;
+            }
             currentUser.getCheckingAccount().transfer(amount, recipient.getSavingsAccount());
             System.out.println("\nWithdrawal successful from Checking Account to " + recipientUsername + "'s Savings Account");
         } else {
