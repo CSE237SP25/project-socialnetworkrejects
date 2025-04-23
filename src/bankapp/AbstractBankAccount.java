@@ -19,8 +19,8 @@ public abstract class AbstractBankAccount {
             throw new IllegalArgumentException("Deposit amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
-            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
-                                               + this.fraudThreshold + " for deposit.");
+            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $"
+                    + this.fraudThreshold + " for deposit.");
         }
         this.balance += amount;
         transactionHistory.add(generateUserTransactionUUID() + " | Deposited: $" + amount);
@@ -31,8 +31,8 @@ public abstract class AbstractBankAccount {
             throw new IllegalArgumentException("Withdrawal amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
-            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
-                                               + this.fraudThreshold + " for withdrawal.");
+            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $"
+                    + this.fraudThreshold + " for withdrawal.");
         }
         this.balance -= amount;
         transactionHistory.add(generateUserTransactionUUID() + " | Withdrew: $" + amount);
@@ -40,11 +40,11 @@ public abstract class AbstractBankAccount {
 
     public void transfer(double amount, AbstractBankAccount otherAccount) {
         if (amount < 0 || amount > this.balance) {
-            throw new IllegalArgumentException("Transfer amount invalid.");
+            throw new IllegalArgumentException("\nTransfer amount invalid.");
         }
         if (isFraudulentTransaction(amount)) {
-            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $" 
-                                               + this.fraudThreshold + " for transfer.");
+            throw new IllegalArgumentException("\nPotential fraudulent transaction detected, please input less than $"
+                    + this.fraudThreshold + " for transfer.");
         }
         otherAccount.deposit(amount);
         this.withdraw(amount);
