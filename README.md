@@ -40,18 +40,18 @@ Not specifically tailored to a user story, but 4 additional issues (#32, #33, #3
 
 Iteration 3:
 
-[(Feedback) delete any old branches](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/48) 
-[(Feedback) A user should be able to use numbers for options](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/50) 
-[(Feedback) A user should be able to exit the program](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/52) 
-[(Feedback) Make one testing class for each actual class](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/49) 
-[(Feedback) Savings account needs tests](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/51) 
-[(Feedback) When you create a new login, if you log out, you cannot log back in](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/53) 
-[(Feedback) Clean up project structure](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/56) 
-[An admin should be able to set a fraud threshold for the user](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/54)
-[The user should be able to transfer to another desired (real) user](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/55)
-[A user should not be able to enter a non-int/non-double amount for withdrawal, deposit, or transfer](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/59) 
-[A user should be redirected to the deposit or withdraw page every time they choose an invalid option](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/62) 
-[A user should be redirected to the transfer page if they choose an invalid option or choose an invalid recipient](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/63) 
+[(Feedback) delete any old branches](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/48)  
+[(Feedback) A user should be able to use numbers for options](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/50)  
+[(Feedback) A user should be able to exit the program](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/52)  
+[(Feedback) Make one testing class for each actual class](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/49)  
+[(Feedback) Savings account needs tests](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/51)  
+[(Feedback) When you create a new login, if you log out, you cannot log back in](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/53)  
+[(Feedback) Clean up project structure](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/56)  
+[An admin should be able to set a fraud threshold for the user](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/54) 
+[The user should be able to transfer to another desired (real) user](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/55) 
+[A user should not be able to enter a non-int/non-double amount for withdrawal, deposit, or transfer](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/59)  
+[A user should be redirected to the deposit or withdraw page every time they choose an invalid option](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/62)  
+[A user should be redirected to the transfer page if they choose an invalid option or choose an invalid recipient](https://github.com/CSE237SP25/project-socialnetworkrejects/issues/63)  
 
 
 
