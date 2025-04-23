@@ -36,17 +36,10 @@ public class Menu {
      * Admin vs Non-admin
      */
     public void handleUserMenuSelection(String menuChoice) {
-
     	if (currentUser == null && (menuChoice.equalsIgnoreCase("exit program") ||
-                menuChoice.equalsIgnoreCase("3"))){
-    	    System.out.println("Exiting the program.");
+            menuChoice.equalsIgnoreCase("3"))) {
+    	    System.out.println("\nExiting the program.");
     	    System.exit(0);
-        }
-
-        if (currentUser != null && (menuChoice.equalsIgnoreCase("exit program") ||
-                menuChoice.equalsIgnoreCase("9"))){
-            System.out.println("Exiting the program.");
-            System.exit(0);
         }
 
         if (currentUser == null) {
@@ -73,17 +66,17 @@ public class Menu {
         } 
 
         else {
-            System.out.println("The selection is invalid.");
+            System.out.println("\nThe selection is invalid.");
         }
     }
-    
+    //for admin menu
     public void setFraudThreshold() {
-        System.out.println("Enter the new fraud threshold: ");
+        System.out.println("\nEnter the new fraud threshold: ");
         double newThreshold = scanner.nextDouble();
         scanner.nextLine();
         
         if (newThreshold <= 0) {
-            System.out.println("Invalid threshold. Please enter a positive number.");
+            System.out.println("\nInvalid threshold. Please enter a positive number.");
         } else {
             for (User user : users.values()) {
                 user.getSavingsAccount().setFraudThreshold(newThreshold);
@@ -91,22 +84,22 @@ public class Menu {
                     user.getCheckingAccount().setFraudThreshold(newThreshold);
                 }
             }
-            System.out.println("Fraud threshold updated for all accounts.");
+            System.out.println("\nFraud threshold updated for all accounts.");
         }
     }
 
     public void handleAdminMenuSelection(String menuChoice) {
-        if (menuChoice.equalsIgnoreCase("view all transactions")) {
+        if (menuChoice.equalsIgnoreCase("view all transactions") || menuChoice.equalsIgnoreCase("1")) {
             viewAllTransactions();
         } 
-        else if (menuChoice.equalsIgnoreCase("set fraud threshold")) {
+        else if (menuChoice.equalsIgnoreCase("set fraud threshold") || menuChoice.equalsIgnoreCase("2")) {
             setFraudThreshold();
         }
-        else if (menuChoice.equalsIgnoreCase("logout")) {
+        else if (menuChoice.equalsIgnoreCase("logout") || menuChoice.equalsIgnoreCase("3")) {
             logout();
         } 
         else {
-            System.out.println("Invalid action.");
+            System.out.println("\nInvalid action.");
         }
     }
 
@@ -130,8 +123,11 @@ public class Menu {
             openCheckingAccount();
         } else if (menuChoice.equalsIgnoreCase("logout") || menuChoice.equalsIgnoreCase("8")) {
             logout();
+        } else if (menuChoice.equalsIgnoreCase("exit program") || menuChoice.equalsIgnoreCase("9")) {
+            System.out.println("\nExiting the program.");
+            System.exit(0);
         } else {
-            System.out.println("Invalid action");
+            System.out.println("\nInvalid action.");
         }
     }
 
@@ -143,7 +139,7 @@ public class Menu {
         if (menuInputHelper.checkYes(menuInputHelper.handleUserBooleanInput(scanner))) {
             String username = promptUsername();
             if (users.containsKey(username)) {
-                System.out.println("Username already exists. Please try again.");
+                System.out.println("\nUsername already exists. Please try again.");
                 return;
             }
             String password = promptPassword();
@@ -178,12 +174,9 @@ public class Menu {
 
             if (username.equalsIgnoreCase("admin")) {
                 handleAdminPassword(password);
-            } else {
-                if (users.containsKey(username)) {
-                    validateAndLoginUser(username, password);
-                } else {
-                    handleNormalUserPassword(username, password);
-                }
+            } 
+            else {
+                handleNonAdminLogin(username, password);
             }
         } else if (menuInputHelper.checkNo(input)) {
             runStartingConfiguration();
@@ -193,6 +186,17 @@ public class Menu {
         }
     }
 
+    public void handleNonAdminLogin(String username, String password) {
+        if (users.containsKey(username)) {
+            validateAndLoginUser(username, password);
+            if (currentUser != null) {
+                return;
+            }
+        } 
+        else {
+            handleNormalUserPassword(username, password);
+        }
+    }
 
     public void handleAdminPassword(String password) {
         if (password.equals("xyz")) {
