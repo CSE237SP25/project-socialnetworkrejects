@@ -20,7 +20,7 @@ public class MenuInputHelper {
             return !(lowerInput.equals("register") || lowerInput.equals("login") || lowerInput.equals("exit program"));
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                return !(lowerInput.equals("logout") || lowerInput.equals("view all transactions") || lowerInput.equals("exit program"));
+                return !(lowerInput.equals("logout") || lowerInput.equals("view all transactions") || lowerInput.equals("set fraud threshold") ||lowerInput.equals("exit program"));
             } else {
                 return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || lowerInput.equals("transfer") || lowerInput.equals("history") || lowerInput.equals("interest calculator") || lowerInput.equals("balance") || lowerInput.equals("open checking account") || lowerInput.equals("logout") || lowerInput.equals("exit program"));
             }

@@ -72,20 +72,40 @@ public class Menu {
             System.out.println("The selection is invalid.");
         }
     }
+    
+    public void setFraudThreshold() {
+        System.out.println("Enter the new fraud threshold: ");
+        double newThreshold = scanner.nextDouble();
+        scanner.nextLine();
+        
+        if (newThreshold <= 0) {
+            System.out.println("Invalid threshold. Please enter a positive number.");
+        } else {
+            for (User user : users.values()) {
+                user.getSavingsAccount().setFraudThreshold(newThreshold);
+                if (user.getCheckingAccount() != null) {
+                    user.getCheckingAccount().setFraudThreshold(newThreshold);
+                }
+            }
+            System.out.println("Fraud threshold updated for all accounts.");
+        }
+    }
 
     public void handleAdminMenuSelection(String menuChoice) {
         if (menuChoice.equalsIgnoreCase("view all transactions")) {
             viewAllTransactions();
         } 
-
+        else if (menuChoice.equalsIgnoreCase("set fraud threshold")) {
+            setFraudThreshold();
+        }
         else if (menuChoice.equalsIgnoreCase("logout")) {
             logout();
         } 
-
         else {
             System.out.println("Invalid action.");
         }
     }
+
 
     //This method may be big, but it is necessary for the menu to work.
     public void handleLoggedUserMenuSelection(String menuChoice) {

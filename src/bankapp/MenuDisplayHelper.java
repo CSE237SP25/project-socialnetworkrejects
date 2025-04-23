@@ -66,6 +66,7 @@ public class MenuDisplayHelper {
                 System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
                 System.out.println("> View All Transactions");
+                System.out.println("> Set Fraud Threshold");
                 System.out.println("> Logout");
                 System.out.println("> Exit Program");
             } else {

@@ -77,4 +77,9 @@ public abstract class AbstractBankAccount {
 
     // Abstract method for interest, because checking account will not have it
     public abstract double calculateInterest(double years);
+    
+    public void setFraudThreshold(double fraudThreshold) {
+        this.fraudThreshold = fraudThreshold;
+        System.out.println("Fraud threshold set to: $" + fraudThreshold);
+    }
 }
