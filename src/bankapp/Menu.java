@@ -258,51 +258,19 @@ public class Menu {
     /**
      * Deposit
      */
+    // this method is a little longer due to the brackets! For readability, we have kept it as is
     public void depositMoney() {
         this.menuDisplayHelper.displayDepositOptions(currentUser);
-        int accountChoice;
-        while (true) {
-            String input = scanner.nextLine().trim().toLowerCase();
 
-            if (input.equals("1") || input.equals("savings") || input.equals("savings account")) {
-                accountChoice = 1;
-                break;
-            } else if (input.equals("2") || input.equals("checking") || input.equals("checking account")) {
-                accountChoice = 2;
-                break;
-            } else {
-                System.out.println("Invalid choice. Please choose a valid account");
-            }
-        }
+        int accountChoice = handleAccountChoiceOverall("Choose an account to deposit into:");
+        double amount = positiveAmountHelper("Enter amount to deposit:");
 
-        while (true) {
-            System.out.println("\nEnter amount to deposit: ");
-            String amountInput = scanner.nextLine().trim();
-            double amount;
-
-            try {
-                amount = Double.parseDouble(amountInput);
-                if (amount <= 0) {
-                    System.out.println("Amount must be positive");
-                    continue;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("invalid input");
-                continue;
-            }
-
-            try {
-                handleAccountDepositChoice(accountChoice, amount);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-            break;
+        try {
+            handleAccountDepositChoice(accountChoice, amount);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
-
-
-
-
 
     public void handleAccountDepositChoice(int accountChoice, double amount) {
         if (accountChoice == 1) {
@@ -323,43 +291,13 @@ public class Menu {
      */
     public void withdrawMoney() {
         this.menuDisplayHelper.displayWithdrawOptions(currentUser);
-        int accountChoice;
-        while (true) {
-            String option = scanner.nextLine().trim().toLowerCase();
+        int accountChoice = handleAccountChoiceOverall("Choose an account to withdraw from:");
+        double amount = positiveAmountHelper("Enter amount to withdraw:");
 
-            if (option.equals("1") || option.equals("checking") || option.equals("checking account")) {
-                accountChoice = 1;
-                break;
-            } else if (option.equals("2") || option.equals("savings") || option.equals("savings account")) {
-                accountChoice = 2;
-                break;
-            } else {
-                System.out.println("Invalid choice. Please choose a valid account");
-            }
-        }
-
-        while (true) {
-            System.out.println("\nEnter amount to withdraw: ");
-            String amountInput = scanner.nextLine().trim();
-            double amount;
-
-            try {
-                amount = Double.parseDouble(amountInput);
-                if (amount <= 0) {
-                    System.out.println("Amount must be positive");
-                    continue;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("invalid input");
-                continue;
-            }
-
-            try {
-                handleAccountWithdrawChoice(accountChoice, amount);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-            break;
+        try {
+            handleAccountWithdrawChoice(accountChoice, amount);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -378,74 +316,42 @@ public class Menu {
     //IMPORTANT: only to an arbitrary user's savings account that already exists for now
     public void transferMoney() {
         this.menuDisplayHelper.displayTransferOptions(currentUser);
-        int accountChoice;
+
+        int accountChoice = handleAccountChoiceOverall("Choose an account to transfer from:");
+        double amount = positiveAmountHelper("Enter amount to transfer:");
+        String recipientUsername = handleValidRecipient("Enter the username of the recipient:");
+
+        handleAccountTransferChoice(accountChoice, amount, recipientUsername);
+    }
+
+    private String handleValidRecipient(String promptMessage) {
         while (true) {
-            String option = scanner.nextLine().trim().toLowerCase();
-
-            if (option.equals("1") || option.equals("checking") || option.equals("checking account")) {
-                accountChoice = 1;
-                break;
-            } else if (option.equals("2") || option.equals("savings") || option.equals("savings account")) {
-                accountChoice = 2;
-                break;
-            } else {
-                System.out.println("Invalid choice. Please choose a valid account");
-            }
-        }
-
-        double amount;
-
-        while (true) {
-            System.out.println("\nEnter amount to transfer: ");
-            String amountInput = scanner.nextLine().trim();
-            try {
-                amount = Double.parseDouble(amountInput);
-                if (amount <= 0) {
-                    System.out.println("Amount must be positive");
-                    continue;
-                }
-                break; // valid amount
-            } catch (NumberFormatException e) {
-                System.out.println("invalid input");
-            }
-        }
-        while (true) {
-            System.out.println("\nEnter the username of the recipient:");
-            String recipientUsername = scanner.nextLine();
-            User recipient = users.get(recipientUsername);
-
-            if (recipient == null) {
-                System.out.println("The recipient user does not exist in the system.");
-                continue;
-            }
+            System.out.println("\n" + promptMessage);
+            String recipientUsername = scanner.nextLine().trim();
 
             if (recipientUsername.equals(currentUser.getUsername())) {
                 System.out.println("You cannot transfer money to yourself.");
                 continue;
             }
-
-            try {
-                handleAccountTransferChoice(accountChoice, amount, recipientUsername);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+            if (!users.containsKey(recipientUsername)) {
+                System.out.println("The recipient user does not exist in the system.");
+                continue;
             }
-            break;
+            return recipientUsername;
         }
     }
 
+
     public void handleAccountTransferChoice(int accountChoice, double amount, String recipientUsername) {
         User recipient = users.get(recipientUsername);
-
         if (recipient == null) {
             System.out.println("\nThe recipient user does not exist in the system.");
             return;
         }
-
         if (recipientUsername.equals(currentUser.getUsername())) {
             System.out.println("\nYou cannot transfer money to yourself.");
             return;
         }
-
         if (accountChoice == 1) {
             currentUser.getSavingsAccount().transfer(amount, recipient.getSavingsAccount());
             System.out.println("\nTransfer successful from Savings Account to " + recipientUsername + "'s Savings Account.");
@@ -456,6 +362,37 @@ public class Menu {
             System.out.println("\nInvalid choice");
         }
 
+    }
+    private int handleAccountChoiceOverall(String promptMessage) {
+        while (true) {
+            System.out.println("\n" + promptMessage);
+            String input = scanner.nextLine().trim().toLowerCase();
+            int choice = handleAccountChoiceParser(input);
+            if (choice != -1) return choice;
+            System.out.println("Invalid choice. Please choose a valid account.");
+        }
+    }
+    private int handleAccountChoiceParser(String input) {
+        if (input.equals("1") || input.equals("savings") || input.equals("savings account")) {
+            return 1;
+        } else if (input.equals("2") || input.equals("checking") || input.equals("checking account")) {
+            return 2;
+        } else {
+            return -1;
+        }
+    }
+
+    private double positiveAmountHelper(String promptMessage) {
+        while (true) {
+            System.out.println("\n" + promptMessage);
+            try {
+                double amount = Double.parseDouble(scanner.nextLine().trim());
+                if (amount > 0) return amount;
+                System.out.println("Amount must be positive.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input.");
+            }
+        }
     }
 
     /**
