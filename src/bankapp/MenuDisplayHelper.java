@@ -67,10 +67,10 @@ public class MenuDisplayHelper {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
-                System.out.println("> View All Transactions");
-                System.out.println("> Set Fraud Threshold");
-                System.out.println("> Logout");
-                System.out.println("> Exit Program");
+                System.out.println("> 1. View All Transactions");
+                System.out.println("> 2. Set Fraud Threshold");
+                System.out.println("> 3. Logout");
+                System.out.println("> 4. Exit Program");
             } else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
@@ -93,7 +93,9 @@ public class MenuDisplayHelper {
     public void displayWelcomeMessage() {
     	System.out.print("\n");
         System.out.println("Welcome to the Bank Social Network.");
-        System.out.print("\n");
+        System.out.println("Please select an option from the menu below.");
+        System.out.print("Note: To log in as an admin user, use the username 'admin' and password 'xyz'.");
+        System.out.print("\n\n");
     }
     
 }
