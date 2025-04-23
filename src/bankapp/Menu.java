@@ -69,7 +69,7 @@ public class Menu {
             System.out.println("\nThe selection is invalid.");
         }
     }
-    
+    //for admin menu
     public void setFraudThreshold() {
         System.out.println("\nEnter the new fraud threshold: ");
         double newThreshold = scanner.nextDouble();
