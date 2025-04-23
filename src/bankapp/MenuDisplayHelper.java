@@ -67,11 +67,10 @@ public class MenuDisplayHelper {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
-                System.out.println("> 1. View All Transactions");
-                System.out.println("> 2. Logout");
-                System.out.println("> 3. Exit Program");
-
-
+                System.out.println("> View All Transactions");
+                System.out.println("> Set Fraud Threshold");
+                System.out.println("> Logout");
+                System.out.println("> Exit Program");
             } else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
