@@ -34,8 +34,6 @@ public class MenuInputHelper {
         }
     }
 
-
-
     public String handleUserBooleanInput(Scanner scanner) {
         String input = scanner.nextLine().toLowerCase();
         while (checkIncorrectUserBooleanInput(input)) {
@@ -55,7 +53,6 @@ public class MenuInputHelper {
                 lowerInput.equals("9"));
     }
 
-
     public boolean checkYes(String input) {
         return input.equalsIgnoreCase("yes") || input.equals("1");
     }
@@ -63,5 +60,4 @@ public class MenuInputHelper {
     public boolean checkNo(String input) {
         return input.equalsIgnoreCase("no") || input.equals("2");
     }
-
 }

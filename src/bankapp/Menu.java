@@ -33,7 +33,7 @@ public class Menu {
     }
 
     /**
-     * Admin vs nonadmin
+     * Admin vs Non-admin
      */
     public void handleUserMenuSelection(String menuChoice) {
 
@@ -123,7 +123,7 @@ public class Menu {
         } else if (menuChoice.equalsIgnoreCase("interest calculator") || menuChoice.equalsIgnoreCase("5")) {
             System.out.println("\nGiving a 1 year calculation of potential interest on money within savings account.");
             System.out.print("Potential interest if money was left for 1 year within savings account: $");
-            calculateInterest(1); // Placeholder for interest calculation
+            calculateInterest(1);
         } else if (menuChoice.equalsIgnoreCase("balance") || menuChoice.equalsIgnoreCase("6")) {
             checkBalance();
         } else if (menuChoice.equalsIgnoreCase("open checking account") || menuChoice.equalsIgnoreCase("7")) {
@@ -166,7 +166,7 @@ public class Menu {
     }
 
     /**
-     * Admin & normal
+     * Admin & non-admin login
      */
     public void userLogin() {
         this.menuDisplayHelper.displayLoginOptions();
@@ -221,7 +221,7 @@ public class Menu {
         }
     }
     /**
-     * Personal User's Transaction history
+     * Personal user's transaction history
      */
     public void viewTransactionHistory() {
         System.out.println("\nNow viewing personal transaction history, with a unique ID for each transaction.");
@@ -276,7 +276,6 @@ public class Menu {
     /**
      * Deposit
      */
-    // this method is a little longer due to the brackets! For readability, we have kept it as is
     public void depositMoney() {
         this.menuDisplayHelper.displayDepositOptions(currentUser);
 
@@ -331,7 +330,6 @@ public class Menu {
         }
     }
 
-    //IMPORTANT: only to an arbitrary user's savings account that already exists for now
     public void transferMoney() {
         this.menuDisplayHelper.displayTransferOptions(currentUser);
 
