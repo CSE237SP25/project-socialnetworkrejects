@@ -76,21 +76,39 @@ public class Menu {
             System.out.println("The selection is invalid.");
         }
     }
+    
+    public void setFraudThreshold() {
+        System.out.println("Enter the new fraud threshold: ");
+        double newThreshold = scanner.nextDouble();
+        scanner.nextLine();
+        
+        if (newThreshold <= 0) {
+            System.out.println("Invalid threshold. Please enter a positive number.");
+        } else {
+            for (User user : users.values()) {
+                user.getSavingsAccount().setFraudThreshold(newThreshold);
+                if (user.getCheckingAccount() != null) {
+                    user.getCheckingAccount().setFraudThreshold(newThreshold);
+                }
+            }
+            System.out.println("Fraud threshold updated for all accounts.");
+        }
+    }
 
     public void handleAdminMenuSelection(String menuChoice) {
         if (menuChoice.equalsIgnoreCase("view all transactions")) {
             viewAllTransactions();
         } 
-
+        else if (menuChoice.equalsIgnoreCase("set fraud threshold")) {
+            setFraudThreshold();
+        }
         else if (menuChoice.equalsIgnoreCase("logout")) {
             logout();
         } 
-
         else {
             System.out.println("Invalid action.");
         }
     }
-
 
     public void handleLoggedUserMenuSelection(String menuChoice) {
         if (menuChoice.equalsIgnoreCase("deposit") || menuChoice.equalsIgnoreCase("1") ) {

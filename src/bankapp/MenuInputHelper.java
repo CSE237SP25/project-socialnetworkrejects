@@ -21,7 +21,7 @@ public class MenuInputHelper {
                     lowerInput.equals("1") || lowerInput.equals("2") || lowerInput.equals("3") );
         } else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
-                return !(lowerInput.equals("logout") || lowerInput.equals("view all transactions") || lowerInput.equals("exit program"));
+                return !(lowerInput.equals("logout") || lowerInput.equals("view all transactions") || lowerInput.equals("set fraud threshold") ||lowerInput.equals("exit program"));
             } else {
                 return !(lowerInput.equals("deposit") || lowerInput.equals("withdraw") || lowerInput.equals("transfer") ||
                         lowerInput.equals("history") || lowerInput.equals("interest calculator") ||
