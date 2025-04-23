@@ -86,5 +86,4 @@ public class MenuTests {
         m.logout();
         assertNull(m.getCurrentUser());
     }
-	
 }

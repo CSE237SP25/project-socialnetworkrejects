@@ -8,6 +8,6 @@ public class CheckingAccount extends AbstractBankAccount {
 
     @Override
     public double calculateInterest(double years) {
-        return 0; // No interest for checking accounts
+        return 0; // 0% interest for a checking account
     }
 }

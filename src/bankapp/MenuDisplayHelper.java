@@ -87,7 +87,6 @@ public class MenuDisplayHelper {
         }
     }
 
-
     /**
      * Welcome message
      */
