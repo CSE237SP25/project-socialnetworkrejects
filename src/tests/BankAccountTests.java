@@ -12,7 +12,6 @@ import bankapp.CheckingAccount;
 import bankapp.User;
 
 public class BankAccountTests {
-
     private SavingsAccount savingsAccount;
     private User user;
 
@@ -117,5 +116,11 @@ public class BankAccountTests {
 
         assertEquals(usernameLength + 37, userTransactionUUID.length());
 
+    }
+    
+    @Test
+    public void testCheckingAccountInterestIsZero() {
+        double interest = checkingAccount.calculateInterest(5);
+        assertEquals(0.0, interest, 0.001);
     }
 }

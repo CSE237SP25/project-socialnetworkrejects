@@ -33,49 +33,56 @@ public class MenuDisplayHelper {
     }
 
     public void displayLoginOptions() {
-    	System.out.print("\n");
+        System.out.print("\n");
         System.out.println("Are you sure you want to login?");
         System.out.print("\n");
-        System.out.println("> Yes");
-        System.out.println("> No");
+        System.out.println("> 1. Yes");
+        System.out.println("> 2. No");
     }
+
 
     public void displayRegisterOptions() {
-    	System.out.print("\n");
+        System.out.print("\n");
         System.out.println("Are you sure you want to register?");
         System.out.print("\n");
-        System.out.println("> Yes");
-        System.out.println("> No");
+        System.out.println("> 1. Yes");
+        System.out.println("> 2. No");
     }
 
-        /**
+
+    /**
      * Main menu
      */
     public void displayMenuOptions(User currentUser) {
         // user not logged in
         if (currentUser == null) {
             System.out.println("[ Menu Options ]");
-            System.out.println("> Register");
-            System.out.println("> Login");
-        } 
+            System.out.println("> 1. Register");
+            System.out.println("> 2. Login");
+            System.out.println("> 3. Exit Program");
+
+        }
         // If a user is logged in
         else {
             if (currentUser.getUsername().equalsIgnoreCase("admin")) {
                 System.out.println("\n" + "Welcome, admin user!");
                 System.out.println("[ Menu Options ]");
-                System.out.println("> View All Transactions");
-                System.out.println("> Logout");
+                System.out.println("> 1. View All Transactions");
+                System.out.println("> 2. Set Fraud Threshold");
+                System.out.println("> 3. Logout");
+                System.out.println("> 4. Exit Program");
             } else {
                 System.out.println("\n" + "Welcome, " + currentUser.getUsername() + "!");
                 System.out.println("[ Menu Options ]");
-                System.out.println("> Deposit");
-                System.out.println("> Withdraw");
-                System.out.println("> Transfer");
-                System.out.println("> History");
-                System.out.println("> Interest Calculator");
-                System.out.println("> Balance");
-                System.out.println("> Open Checking Account");
-                System.out.println("> Logout");
+                System.out.println("> 1. Deposit");
+                System.out.println("> 2. Withdraw");
+                System.out.println("> 3. Transfer");
+                System.out.println("> 4. History");
+                System.out.println("> 5. Interest Calculator");
+                System.out.println("> 6. Balance");
+                System.out.println("> 7. Open Checking Account");
+                System.out.println("> 8. Logout");
+                System.out.println("> 9. Exit Program");
             }
         }
     }
@@ -86,7 +93,9 @@ public class MenuDisplayHelper {
     public void displayWelcomeMessage() {
     	System.out.print("\n");
         System.out.println("Welcome to the Bank Social Network.");
-        System.out.print("\n");
+        System.out.println("Please select an option from the menu below.");
+        System.out.print("Note: To log in as an admin user, use the username 'admin' and password 'xyz'.");
+        System.out.print("\n\n");
     }
     
 }

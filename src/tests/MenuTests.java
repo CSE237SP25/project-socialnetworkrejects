@@ -1,5 +1,4 @@
 package tests;
-
 import bankapp.Menu;
 import bankapp.MenuInputHelper;
 import bankapp.User;
@@ -87,5 +86,4 @@ public class MenuTests {
         m.logout();
         assertNull(m.getCurrentUser());
     }
-	
 }
